@@ -1,0 +1,103 @@
+{
+  "_version" : "2.0.0",
+  "_songName" : "Marionette",
+  "_songSubName" : "",
+  "_songAuthorName" : "Memme",
+  "_levelAuthorName" : "TheZipCreator",
+  "_beatsPerMinute" : 164,
+  "_previewStartTime" : 26,
+  "_previewDuration" : 10,
+  "_songTimeOffset" : 0,
+  "_shuffle" : 0,
+  "_shufflePeriod" : 0.5,
+  "_coverImageFilename" : "memme.jpg",
+  "_songFilename" : "O2jam_Marionette.ogg",
+  "_environmentName" : "TimbalandEnvironment",
+  "_allDirectionsEnvironmentName" : "GlassDesertEnvironment",
+  "_customData" : {
+    "_editors" : {
+      "_lastEditedBy" : "ChroMapper",
+      "ChroMapper" : {
+        "version" : "0.8.454"
+      }
+    }
+  },
+  "_difficultyBeatmapSets" : [
+    {
+      "_beatmapCharacteristicName" : "Standard",
+      "_difficultyBeatmaps" : [
+        {
+          "_difficulty" : "Expert",
+          "_difficultyRank" : 7,
+          "_beatmapFilename" : "ExpertStandard.dat",
+          "_noteJumpMovementSpeed" : 21,
+          "_noteJumpStartBeatOffset" : -0.25,
+          "_customData" : {
+            "_suggestions" : [
+              "Chroma"
+            ],
+            "_colorLeft" : {"r":0,"g":1,"b":0.095},
+            "_colorRight" : {"r":0.684,"g":0,"b":1},
+            "_difficultyLabel" : "No Noodle"
+          }
+        },
+        {
+          "_difficulty" : "ExpertPlus",
+          "_difficultyRank" : 9,
+          "_beatmapFilename" : "ExpertPlusStandard.dat",
+          "_noteJumpMovementSpeed" : 21,
+          "_noteJumpStartBeatOffset" : -0.25,
+          "_customData" : {
+            "_requirements" : [
+              "Noodle Extensions"
+            ],
+            "_suggestions" : [
+              "Chroma"
+            ],
+            "_colorLeft" : {"r":0,"g":1,"b":0.095},
+            "_colorRight" : {"r":0.684,"g":0,"b":1},
+            "_difficultyLabel" : "Noodle"
+          }
+        }
+      ]
+    },
+    {
+      "_beatmapCharacteristicName" : "Lightshow",
+      "_difficultyBeatmaps" : [
+        {
+          "_difficulty" : "Expert",
+          "_difficultyRank" : 7,
+          "_beatmapFilename" : "ExpertLightshow.dat",
+          "_noteJumpMovementSpeed" : 21,
+          "_noteJumpStartBeatOffset" : -0.25,
+          "_customData" : {
+            "_suggestions" : [
+              "Chroma"
+            ],
+            "_colorLeft" : {"r":0,"g":1,"b":0.095},
+            "_colorRight" : {"r":0.684,"g":0,"b":1},
+            "_difficultyLabel" : "Noodleless Lightshow"
+          }
+        },
+        {
+          "_difficulty" : "ExpertPlus",
+          "_difficultyRank" : 9,
+          "_beatmapFilename" : "ExpertPlusLightshow.dat",
+          "_noteJumpMovementSpeed" : 21,
+          "_noteJumpStartBeatOffset" : -0.25,
+          "_customData" : {
+            "_requirements" : [
+              "Noodle Extensions"
+            ],
+            "_suggestions" : [
+              "Chroma"
+            ],
+            "_colorLeft" : {"r":0,"g":1,"b":0.095},
+            "_colorRight" : {"r":0.684,"g":0,"b":1},
+            "_difficultyLabel" : "Noodle Lightshow"
+          }
+        }
+      ]
+    }
+  ]
+}

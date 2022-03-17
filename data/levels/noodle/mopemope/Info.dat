@@ -1,0 +1,95 @@
+{
+  "_version": "2.0.0",
+  "_songName": "Mope Mope",
+  "_songSubName": "",
+  "_songAuthorName": "LeaF",
+  "_levelAuthorName": "waika",
+  "_beatsPerMinute": 200,
+  "_shuffle": 0,
+  "_shufflePeriod": 0.5,
+  "_previewStartTime": 2,
+  "_previewDuration": 20,
+  "_songFilename": "song.egg",
+  "_coverImageFilename": "cover.jpg",
+  "_environmentName": "TriangleEnvironment",
+  "_songTimeOffset": 0,
+  "_customData": {
+    "_contributors": [
+      {
+        "_role": "Mapper",
+        "_name": "waika",
+        "_iconPath": "waika.png"
+      }
+    ],
+    "_editors": {
+      "MMA2": {
+        "version": "4.7.3"
+      },
+      "_lastEditedBy": "MMA2"
+    }
+  },
+  "_difficultyBeatmapSets": [
+    {
+      "_beatmapCharacteristicName": "Standard",
+      "_difficultyBeatmaps": [
+        {
+          "_difficulty": "ExpertPlus",
+          "_difficultyRank": 9,
+          "_beatmapFilename": "ExpertPlus.dat",
+          "_noteJumpMovementSpeed": 16,
+          "_noteJumpStartBeatOffset": 2,
+          "_customData": {
+            "_difficultyLabel": "mope mope",
+            "_editorOffset": 0,
+            "_editorOldOffset": 0,
+            "_warnings": [
+              "Fast Flashing Images",
+              "Disturbing Contents",
+              "--This Level is NOT for Children--"
+            ],
+            "_information": [],
+            "_suggestions": [],
+            "_colorLeft": {
+              "r": 0.9700000286102295,
+              "g": 0.46000000834465027,
+              "b": 0.07500000298023224
+            },
+            "_colorRight": {
+              "r": 0.20000000298023224,
+              "g": 0.6840000152587891,
+              "b": 1
+            },
+            "_envColorLeft": {
+              "r": 1,
+              "g": 0,
+              "b": 0
+            },
+            "_envColorRight": {
+              "r": 0.20000000298023224,
+              "g": 0.6840000152587891,
+              "b": 1
+            },
+            "_obstacleColor": {
+              "r": 1,
+              "g": 0,
+              "b": 0
+            },
+            "_requirements": [
+              "Chroma",
+              "Noodle Extensions"
+            ],
+            "_environmentRemoval": [
+              "Floor",
+              "Spectrograms",
+              "TrackMirror",
+              "TrackConstruction",
+              "Construction",
+              "BackColumns",
+              "Buildings"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

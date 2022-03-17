@@ -1,0 +1,267 @@
+{
+  "_version": "2.0.0",
+  "_songName": "PAUSE",
+  "_songSubName": "",
+  "_songAuthorName": "Tokyo Machine",
+  "_levelAuthorName": "nitronik.exe",
+  "_beatsPerMinute": 128,
+  "_shuffle": 0,
+  "_shufflePeriod": 0.5,
+  "_previewStartTime": 6.5,
+  "_previewDuration": 10,
+  "_songFilename": "PAUSE_fin.egg",
+  "_coverImageFilename": "pause.jpg",
+  "_environmentName": "RocketEnvironment",
+  "_songTimeOffset": 0,
+  "_customData": {
+    "_editors": {
+      "_lastEditedBy": "ChroMapper",
+      "ChroMapper": {
+        "version": "0.7.379"
+      }
+    },
+    "_contributors": [
+      {
+        "_name": "nitronik.exe",
+        "_role": "mapper, lighter, remixer",
+        "_iconPath": "0001.png"
+      },
+      {
+        "_name": "Pixelguy",
+        "_role": "Moral Support",
+        "_iconPath": "PG.PNG"
+      }
+    ]
+  },
+  "_difficultyBeatmapSets": [
+    {
+      "_beatmapCharacteristicName": "Standard",
+      "_difficultyBeatmaps": [
+        {
+          "_difficulty": "Easy",
+          "_difficultyRank": 1,
+          "_beatmapFilename": "EasyStandard.dat",
+          "_noteJumpMovementSpeed": 10,
+          "_noteJumpStartBeatOffset": 1,
+          "_customData": {
+            "_editorOffset": 0,
+            "_editorOldOffset": 0,
+            "_suggestions": [
+              "Chroma"
+            ],
+            "_colorLeft": {
+              "r": 1,
+              "g": 0,
+              "b": 0.5
+            },
+            "_colorRight": {
+              "r": 0,
+              "g": 1,
+              "b": 1
+            },
+            "_envColorLeft": {
+              "r": 1.5,
+              "g": 0,
+              "b": 0.5
+            },
+            "_envColorRight": {
+              "r": 0.5,
+              "g": 1.25,
+              "b": 1.5
+            },
+            "_obstacleColor": {
+              "r": 1,
+              "g": 0,
+              "b": 0.5
+            }
+          }
+        },
+        {
+          "_difficulty": "Normal",
+          "_difficultyRank": 3,
+          "_beatmapFilename": "NormalStandard.dat",
+          "_noteJumpMovementSpeed": 12,
+          "_noteJumpStartBeatOffset": 0.5,
+          "_customData": {
+            "_editorOffset": 0,
+            "_editorOldOffset": 0,
+            "_suggestions": [
+              "Chroma"
+            ],
+            "_colorLeft": {
+              "r": 1,
+              "g": 0,
+              "b": 0.5
+            },
+            "_colorRight": {
+              "r": 0,
+              "g": 1,
+              "b": 1
+            },
+            "_envColorLeft": {
+              "r": 1.5,
+              "g": 0,
+              "b": 0.5
+            },
+            "_envColorRight": {
+              "r": 0.5,
+              "g": 1.25,
+              "b": 1.5
+            },
+            "_obstacleColor": {
+              "r": 1,
+              "g": 0,
+              "b": 0.5
+            }
+          }
+        },
+        {
+          "_difficulty": "Hard",
+          "_difficultyRank": 5,
+          "_beatmapFilename": "HardStandard.dat",
+          "_noteJumpMovementSpeed": 14,
+          "_noteJumpStartBeatOffset": 0,
+          "_customData": {
+            "_editorOffset": 0,
+            "_editorOldOffset": 0,
+            "_suggestions": [
+              "Chroma"
+            ],
+            "_colorLeft": {
+              "r": 1,
+              "g": 0,
+              "b": 0.5
+            },
+            "_colorRight": {
+              "r": 0,
+              "g": 1,
+              "b": 1
+            },
+            "_envColorLeft": {
+              "r": 1.5,
+              "g": 0,
+              "b": 0.5
+            },
+            "_envColorRight": {
+              "r": 0.5,
+              "g": 1.25,
+              "b": 1.5
+            },
+            "_obstacleColor": {
+              "r": 1,
+              "g": 0,
+              "b": 0.5
+            }
+          }
+        },
+        {
+          "_difficulty": "Expert",
+          "_difficultyRank": 7,
+          "_beatmapFilename": "ExpertStandard.dat",
+          "_noteJumpMovementSpeed": 20,
+          "_noteJumpStartBeatOffset": 0.5,
+          "_customData": {
+            "_editorOffset": 0,
+            "_editorOldOffset": 0,
+            "_difficultyLabel": "PAUSE",
+            "_requirements": [
+              "Noodle Extensions"
+            ],
+            "_suggestions": [
+              "Chroma"
+            ],
+            "_colorLeft": {
+              "r": 1,
+              "g": 0,
+              "b": 0.5
+            },
+            "_colorRight": {
+              "r": 0,
+              "g": 1,
+              "b": 1
+            },
+            "_obstacleColor": {
+              "r": 1,
+              "g": 0,
+              "b": 0.5
+            },
+            "_envColorLeft": {
+              "r": 1.5,
+              "g": 0,
+              "b": 0.5
+            },
+            "_envColorRight": {
+              "r": 0.5,
+              "g": 1.25,
+              "b": 1.5
+            },
+            "_envColorLeftBoost": {
+              "r": 0.9,
+              "g": 0,
+              "b": 0.9
+            },
+            "_envColorRightBoost": {
+              "r": 0,
+              "g": 0.9,
+              "b": 0.9
+            }
+          }
+        },
+        {
+          "_difficulty": "ExpertPlus",
+          "_difficultyRank": 9,
+          "_beatmapFilename": "ExpertPlusStandard.dat",
+          "_noteJumpMovementSpeed": 20,
+          "_noteJumpStartBeatOffset": 0.25,
+          "_customData": {
+            "_editorOffset": 0,
+            "_editorOldOffset": 0,
+            "_difficultyLabel": "PAUSE+",
+            "_colorLeft": {
+              "r": 1,
+              "g": 0,
+              "b": 0.5
+            },
+            "_colorRight": {
+              "r": 0,
+              "g": 1,
+              "b": 1
+            },
+            "_suggestions": [
+              "Chroma"
+            ],
+            "_envColorLeftBoost": {
+              "r": 0.98,
+              "g": 0.325,
+              "b": 0
+            },
+            "_envColorRightBoost": {
+              "r": 0,
+              "g": 0.827,
+              "b": 0.835
+            },
+            "_obstacleColor": {
+              "r": 1,
+              "g": 0,
+              "b": 0.5
+            },
+            "_requirements": [
+              "Noodle Extensions"
+            ],
+            "_envColorLeft": {
+              "r": 1.5,
+              "g": 0,
+              "b": 0.5
+            },
+            "_envColorRight": {
+              "r": 0.5,
+              "g": 1.25,
+              "b": 1.5
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "_allDirectionsEnvironmentName": "GlassDesertEnvironment"
+}

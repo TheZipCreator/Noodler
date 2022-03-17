@@ -1,0 +1,456 @@
+{
+  "_version" : "2.2.0",
+  "_notes" : [
+    {
+      "_time" : 2,
+      "_lineIndex" : 0,
+      "_lineLayer" : 0,
+      "_type" : 0,
+      "_cutDirection" : 1,
+      "_customData" : {
+        "_track" : "1"
+      }
+    },
+    {
+      "_time" : 2.5,
+      "_lineIndex" : 1,
+      "_lineLayer" : 0,
+      "_type" : 1,
+      "_cutDirection" : 1,
+      "_customData" : {
+        "_track" : "1"
+      }
+    },
+    {
+      "_time" : 3,
+      "_lineIndex" : 2,
+      "_lineLayer" : 0,
+      "_type" : 0,
+      "_cutDirection" : 0,
+      "_customData" : {
+        "_track" : "1"
+      }
+    },
+    {
+      "_time" : 3.5,
+      "_lineIndex" : 3,
+      "_lineLayer" : 0,
+      "_type" : 1,
+      "_cutDirection" : 0,
+      "_customData" : {
+        "_track" : "1"
+      }
+    },
+    {
+      "_time" : 4,
+      "_lineIndex" : 0,
+      "_lineLayer" : 0,
+      "_type" : 0,
+      "_cutDirection" : 1,
+      "_customData" : {
+        "_track" : "1"
+      }
+    },
+    {
+      "_time" : 4.5,
+      "_lineIndex" : 1,
+      "_lineLayer" : 0,
+      "_type" : 1,
+      "_cutDirection" : 1,
+      "_customData" : {
+        "_track" : "1"
+      }
+    },
+    {
+      "_time" : 5,
+      "_lineIndex" : 0,
+      "_lineLayer" : 0,
+      "_type" : 0,
+      "_cutDirection" : 0,
+      "_customData" : {
+        "_track" : "1"
+      }
+    },
+    {
+      "_time" : 5.5,
+      "_lineIndex" : 1,
+      "_lineLayer" : 0,
+      "_type" : 1,
+      "_cutDirection" : 0,
+      "_customData" : {
+        "_track" : "1"
+      }
+    },
+    {
+      "_time" : 6,
+      "_lineIndex" : 2,
+      "_lineLayer" : 0,
+      "_type" : 0,
+      "_cutDirection" : 1,
+      "_customData" : {
+        "_track" : "1"
+      }
+    },
+    {
+      "_time" : 6.5,
+      "_lineIndex" : 3,
+      "_lineLayer" : 0,
+      "_type" : 1,
+      "_cutDirection" : 1,
+      "_customData" : {
+        "_track" : "1"
+      }
+    },
+    {
+      "_time" : 7,
+      "_lineIndex" : 2,
+      "_lineLayer" : 0,
+      "_type" : 0,
+      "_cutDirection" : 0,
+      "_customData" : {
+        "_track" : "1"
+      }
+    },
+    {
+      "_time" : 7.5,
+      "_lineIndex" : 3,
+      "_lineLayer" : 0,
+      "_type" : 1,
+      "_cutDirection" : 0,
+      "_customData" : {
+        "_track" : "1"
+      }
+    },
+    {
+      "_time" : 8,
+      "_lineIndex" : 1,
+      "_lineLayer" : 0,
+      "_type" : 0,
+      "_cutDirection" : 1,
+      "_customData" : {
+        "_track" : "1"
+      }
+    },
+    {
+      "_time" : 8,
+      "_lineIndex" : 2,
+      "_lineLayer" : 0,
+      "_type" : 1,
+      "_cutDirection" : 1,
+      "_customData" : {
+        "_track" : "1"
+      }
+    },
+    {
+      "_time" : 8.5,
+      "_lineIndex" : 1,
+      "_lineLayer" : 2,
+      "_type" : 0,
+      "_cutDirection" : 0,
+      "_customData" : {
+        "_track" : "1"
+      }
+    },
+    {
+      "_time" : 8.5,
+      "_lineIndex" : 2,
+      "_lineLayer" : 2,
+      "_type" : 1,
+      "_cutDirection" : 0,
+      "_customData" : {
+        "_track" : "1"
+      }
+    },
+    {
+      "_time" : 9,
+      "_lineIndex" : 1,
+      "_lineLayer" : 0,
+      "_type" : 0,
+      "_cutDirection" : 1,
+      "_customData" : {
+        "_track" : "1"
+      }
+    },
+    {
+      "_time" : 9,
+      "_lineIndex" : 2,
+      "_lineLayer" : 0,
+      "_type" : 1,
+      "_cutDirection" : 1,
+      "_customData" : {
+        "_track" : "1"
+      }
+    },
+    {
+      "_time" : 9.5,
+      "_lineIndex" : 1,
+      "_lineLayer" : 2,
+      "_type" : 0,
+      "_cutDirection" : 0,
+      "_customData" : {
+        "_track" : "1"
+      }
+    },
+    {
+      "_time" : 9.5,
+      "_lineIndex" : 2,
+      "_lineLayer" : 2,
+      "_type" : 1,
+      "_cutDirection" : 0,
+      "_customData" : {
+        "_track" : "1"
+      }
+    },
+    {
+      "_time" : 12,
+      "_lineIndex" : 0,
+      "_lineLayer" : 0,
+      "_type" : 0,
+      "_cutDirection" : 1,
+      "_customData" : {
+        "_track" : "2"
+      }
+    },
+    {
+      "_time" : 12.5,
+      "_lineIndex" : 1,
+      "_lineLayer" : 0,
+      "_type" : 1,
+      "_cutDirection" : 1,
+      "_customData" : {
+        "_track" : "2"
+      }
+    },
+    {
+      "_time" : 13,
+      "_lineIndex" : 2,
+      "_lineLayer" : 0,
+      "_type" : 0,
+      "_cutDirection" : 0,
+      "_customData" : {
+        "_track" : "2"
+      }
+    },
+    {
+      "_time" : 13.5,
+      "_lineIndex" : 3,
+      "_lineLayer" : 0,
+      "_type" : 1,
+      "_cutDirection" : 0,
+      "_customData" : {
+        "_track" : "2"
+      }
+    },
+    {
+      "_time" : 14,
+      "_lineIndex" : 0,
+      "_lineLayer" : 0,
+      "_type" : 0,
+      "_cutDirection" : 1,
+      "_customData" : {
+        "_track" : "2"
+      }
+    },
+    {
+      "_time" : 14.5,
+      "_lineIndex" : 1,
+      "_lineLayer" : 0,
+      "_type" : 1,
+      "_cutDirection" : 1,
+      "_customData" : {
+        "_track" : "2"
+      }
+    },
+    {
+      "_time" : 15,
+      "_lineIndex" : 0,
+      "_lineLayer" : 0,
+      "_type" : 0,
+      "_cutDirection" : 0,
+      "_customData" : {
+        "_track" : "2"
+      }
+    },
+    {
+      "_time" : 15.5,
+      "_lineIndex" : 1,
+      "_lineLayer" : 0,
+      "_type" : 1,
+      "_cutDirection" : 0,
+      "_customData" : {
+        "_track" : "2"
+      }
+    },
+    {
+      "_time" : 16,
+      "_lineIndex" : 2,
+      "_lineLayer" : 0,
+      "_type" : 0,
+      "_cutDirection" : 1,
+      "_customData" : {
+        "_track" : "2"
+      }
+    },
+    {
+      "_time" : 16.5,
+      "_lineIndex" : 3,
+      "_lineLayer" : 0,
+      "_type" : 1,
+      "_cutDirection" : 1,
+      "_customData" : {
+        "_track" : "2"
+      }
+    },
+    {
+      "_time" : 17,
+      "_lineIndex" : 2,
+      "_lineLayer" : 0,
+      "_type" : 0,
+      "_cutDirection" : 0,
+      "_customData" : {
+        "_track" : "2"
+      }
+    },
+    {
+      "_time" : 17.5,
+      "_lineIndex" : 3,
+      "_lineLayer" : 0,
+      "_type" : 1,
+      "_cutDirection" : 0,
+      "_customData" : {
+        "_track" : "2"
+      }
+    },
+    {
+      "_time" : 18,
+      "_lineIndex" : 1,
+      "_lineLayer" : 0,
+      "_type" : 0,
+      "_cutDirection" : 1,
+      "_customData" : {
+        "_track" : "2"
+      }
+    },
+    {
+      "_time" : 18,
+      "_lineIndex" : 2,
+      "_lineLayer" : 0,
+      "_type" : 1,
+      "_cutDirection" : 1,
+      "_customData" : {
+        "_track" : "2"
+      }
+    },
+    {
+      "_time" : 18.5,
+      "_lineIndex" : 1,
+      "_lineLayer" : 2,
+      "_type" : 0,
+      "_cutDirection" : 0,
+      "_customData" : {
+        "_track" : "2"
+      }
+    },
+    {
+      "_time" : 18.5,
+      "_lineIndex" : 2,
+      "_lineLayer" : 2,
+      "_type" : 1,
+      "_cutDirection" : 0,
+      "_customData" : {
+        "_track" : "2"
+      }
+    },
+    {
+      "_time" : 19,
+      "_lineIndex" : 1,
+      "_lineLayer" : 0,
+      "_type" : 0,
+      "_cutDirection" : 1,
+      "_customData" : {
+        "_track" : "2"
+      }
+    },
+    {
+      "_time" : 19,
+      "_lineIndex" : 2,
+      "_lineLayer" : 0,
+      "_type" : 1,
+      "_cutDirection" : 1,
+      "_customData" : {
+        "_track" : "2"
+      }
+    },
+    {
+      "_time" : 19.5,
+      "_lineIndex" : 1,
+      "_lineLayer" : 2,
+      "_type" : 0,
+      "_cutDirection" : 0,
+      "_customData" : {
+        "_track" : "2"
+      }
+    },
+    {
+      "_time" : 19.5,
+      "_lineIndex" : 2,
+      "_lineLayer" : 2,
+      "_type" : 1,
+      "_cutDirection" : 0,
+      "_customData" : {
+        "_track" : "2"
+      }
+    }
+  ],
+  "_obstacles" : [
+  ],
+  "_events" : [
+  ],
+  "_waypoints" : [
+  ],
+  "_customData" : {
+    "_time" : 11.964,
+    "_customEvents" : [
+      {
+        "_time" : 1,
+        "_type" : "AnimateTrack",
+        "_data" : {
+          "_duration" : 9,
+          "_track" : "1",
+          "_position" : [
+            [
+              -2,
+              0,
+              0
+            ],
+            [
+              2,
+              0,
+              1
+            ]
+          ]
+        }
+      },
+      {
+        "_time" : 11,
+        "_type" : "AssignPathAnimation",
+        "_data" : {
+          "_duration" : 9,
+          "_track" : "1",
+          "_position" : [
+            [
+              -2,
+              0,
+              0
+            ],
+            [
+              2,
+              0,
+              1
+            ]
+          ]
+        }
+      }
+    ]
+  }
+}

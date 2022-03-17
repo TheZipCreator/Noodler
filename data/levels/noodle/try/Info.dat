@@ -1,0 +1,63 @@
+{
+  "_version": "2.0.0",
+  "_songName": "Try",
+  "_songSubName": "",
+  "_songAuthorName": "MitiS Feat. RORY",
+  "_levelAuthorName": "Remie & Lone",
+  "_beatsPerMinute": 132,
+  "_shuffle": 0,
+  "_shufflePeriod": 0.5,
+  "_previewStartTime": 52,
+  "_previewDuration": 7,
+  "_songFilename": "Try.egg",
+  "_coverImageFilename": "Try.jpg",
+  "_environmentName": "OriginsEnvironment",
+  "_songTimeOffset": 0,
+  "_customData": {
+    "_editors": {
+      "_lastEditedBy": "ChroMapper",
+      "ChroMapper": {
+        "version": "0.7.0"
+      },
+      "MMA2": {
+        "version": "4.8.0"
+      }
+    }
+  },
+  "_difficultyBeatmapSets": [
+    {
+      "_beatmapCharacteristicName": "Standard",
+      "_difficultyBeatmaps": [
+        {
+          "_difficulty": "ExpertPlus",
+          "_difficultyRank": 9,
+          "_beatmapFilename": "ExpertPlusStandard.dat",
+          "_noteJumpMovementSpeed": 17,
+          "_noteJumpStartBeatOffset": -0.7,
+          "_customData": {
+            "_editorOffset": 0,
+            "_editorOldOffset": 0,
+            "_difficultyLabel": "EXPERT+",
+            "_requirements": [
+              "Noodle Extensions"
+            ],
+            "_suggestions": [
+              "Chroma"
+            ],
+            "_environmentRemoval": [
+              "Spectrograms",
+              "Mirror",
+              "BackColumns",
+              "Buildings",
+              "Construction",
+              "TrackMirror",
+              "CombinedMesh",
+              "SpectrogramEnd"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "_allDirectionsEnvironmentName": "GlassDesertEnvironment"
+}

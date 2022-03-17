@@ -1,0 +1,58 @@
+{
+  "_version": "2.0.0",
+  "_songName": "Doppelganger",
+  "_songSubName": "",
+  "_songAuthorName": "LeaF",
+  "_levelAuthorName": "Aeroluna",
+  "_beatsPerMinute": 140,
+  "_shuffle": 0,
+  "_shufflePeriod": 0.5,
+  "_previewStartTime": 128,
+  "_previewDuration": 10,
+  "_songFilename": "song.egg",
+  "_coverImageFilename": "cover.png",
+  "_environmentName": "BigMirrorEnvironment",
+  "_songTimeOffset": 0,
+  "_customData": {
+    "_contributors": [
+      {
+        "_role": "Mapper, Lighter, Modder",
+        "_name": "Aeroluna",
+        "_iconPath": "aeroluna.png"
+      },
+      {
+        "_role": "Additional Effects",
+        "_name": "Reaxt",
+        "_iconPath": "reaxt.png"
+      }
+    ]
+  },
+  "_difficultyBeatmapSets": [
+    {
+      "_beatmapCharacteristicName": "Standard",
+      "_difficultyBeatmaps": [
+        {
+          "_difficulty": "ExpertPlus",
+          "_difficultyRank": 9,
+          "_beatmapFilename": "Doppelganger.dat",
+          "_noteJumpMovementSpeed": 18,
+          "_noteJumpStartBeatOffset": 0,
+          "_customData": {
+            "_suggestions": [
+              "Chroma"
+            ],
+            "_requirements": [
+              "Noodle Extensions"
+            ],
+            "_environmentRemoval": [
+              "Floor",
+              "Spectrogram",
+              "Construction",
+              "GlowLine"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
