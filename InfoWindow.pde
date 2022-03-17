@@ -36,6 +36,8 @@ public class InfoWindow extends PApplet {
       fill(255);
       textSize(32);
       text("Precision:"+precision, 0, 32);
+      textSize(16);
+      text(songPath, 300, 16);
       float scaling = 0.5;
       float noteSpacing = noteSize*scaling;
       float x = (width/2)-noteSpacing*2;

@@ -29,7 +29,7 @@ boolean shftPressed = false;
 boolean cameraActive = false;
 int state = 0; 
 JSONObject map;
-String songPath = "";
+String songPath = "D:/Processing/Noodler/data/levels/noodle/C18H27NO3";
 float noteSize = 50;
 ArrayList<Note> notes;
 ArrayList<Obstacle> obstacles;
@@ -135,7 +135,7 @@ void setup() {
   notes = new ArrayList<Note>();
   obstacles = new ArrayList<Obstacle>();
   events = new ArrayList<Event>();
-  loadSong("D:/Processing/Noodler/data/levels/noodle/C18H27NO3", "Standard", "ExpertPlus");
+  loadSong(songPath, "Standard", "ExpertPlus");
   String audioPath = songPath+"\\song.mp3";
   if(customEvents == null) throw new NullPointerException(); //this is just here to prevent the exception from being thrown somewhere else
   player = new SamplePlayer(ac, SampleManager.sample(audioPath));
