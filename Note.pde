@@ -127,7 +127,9 @@ class Note {
     JSONObject animations = new JSONObject();
     if(customData.containsKey("_animation")) animations = (JSONObject)customData.get("_animation");
     if(customData.containsKey("_track")){
-      JSONObject temp = tracks.get((String)customData.get("_track")).getMostRecentPathAnimation(cursor);
+      Track track = tracks.get((String)customData.get("_track"));
+      if(!track.updatedThisFrame) track.update();
+      JSONObject temp = track.getMostRecentPathAnimation(cursor);
       Set<String> keys = temp.keySet();
       for(String i: keys) {
         animations.put(i, temp.get(i));

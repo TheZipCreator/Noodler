@@ -415,7 +415,8 @@ void draw() {
     //update tracks (this is done last so that there's no flickering when the player is being animated)
     Set<String> tracksKeySet = tracks.keySet();
     for(String i : tracksKeySet) {
-      tracks.get(i).update();
+      //tracks.get(i).update();
+      tracks.get(i).updatedThisFrame = false;
     }
   }
   if(!loadedSong.equals(songPath)) {

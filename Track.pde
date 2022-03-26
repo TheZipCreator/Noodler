@@ -3,6 +3,7 @@ class Track {
   String name;
   ArrayList<CustomEvent> events;
   color col;
+  boolean updatedThisFrame;
   
   Track(String name) {
     properties = new JSONObject();
@@ -19,9 +20,11 @@ class Track {
     }
     col = color(random(64, 192), random(64, 192), random(64, 192));
     Collections.sort(this.events);
+    updatedThisFrame = false;
   }
   
   void update() {
+    updatedThisFrame = true;
     properties = new JSONObject();
     for(int i = 0; i < events.size(); i++) {
       CustomEvent e = events.get(i);
