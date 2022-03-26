@@ -5,6 +5,7 @@ public class InfoWindow extends PApplet {
   public HashMap<String, PImage> propertyImages;
   public int oldWidth;
   public int oldHeight;
+  public boolean isAlwaysOnTop = false;
   
   public void settings() {
     size(800, 800, FX2D); //renderer is FX2D to avoid a crash when resizing window
@@ -23,7 +24,8 @@ public class InfoWindow extends PApplet {
     elements = new ArrayList<UIElement>();
     background(0);
     textMode(MODEL);
-    elements.add(new CheckBox(width/2, 100, 25, 25, "global_displayTracks", false, "Display Tracks"));
+    elements.add(new CheckBox(300, 100, 25, 25, "global_displayTracks", false, "Display Tracks"));
+    elements.add(new CheckBox(300, 130, 25, 25, "global_alwaysOnTop", false, "Always On Top"));
     elements.add(new FileSelector(300, 0, "global_songPath", songPath, true, "Pick Map"));
   }
   public void draw() {
@@ -77,6 +79,13 @@ public class InfoWindow extends PApplet {
             if(!(path.equals(songPath))) {
               //loadSong(songPath, "Standard", "ExpertPlus");
               songPath = path;
+            }
+          break;
+          case "global_alwaysOnTop":
+            boolean aot = ((CheckBox)uie).checked;
+            if(isAlwaysOnTop != aot) {
+              surface.setAlwaysOnTop(aot);
+              isAlwaysOnTop = aot;
             }
           break;
           default:

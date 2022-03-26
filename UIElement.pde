@@ -163,6 +163,7 @@ class FileSelector extends UIElement {
   void render(PApplet app) {
     app.image(UIElementImages.get("FileSelector"), x, y);
     app.textSize(16);
+    app.fill(255);
     app.text(path, x+xSize+2, y+(ySize/2)+8);
   }
   @Override
