@@ -70,4 +70,10 @@ class Event { //lighting events. CustomEvents are their own thing
     if(customData.size() > 0) obj.put("_customData", customData);
     return obj;
   }
+  void fromJSON(JSONObject obj) {
+    if(obj.containsKey("_time")) time = dapf(obj.get("_time"));
+    if(obj.containsKey("_type")) type = dapi(obj.get("_type"));
+    if(obj.containsKey("_value")) value = dapi(obj.get("_value"));
+    if(obj.containsKey("_customData")) customData = (JSONObject)obj.get("_customData");
+  }
 }

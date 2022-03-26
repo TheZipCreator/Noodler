@@ -43,7 +43,7 @@ public class InfoWindow extends PApplet {
       float y = 100;
       noteHitboxes = new ArrayList<HashMap<String, Object>>();
       for(int i = 0; i < notes.size(); i++) {
-        HashMap<String, Object> hitbox = notes.get(i).render2d(scaling, x, y, selection.contains(i));
+        HashMap<String, Object> hitbox = notes.get(i).render2d(scaling, x, y);
         if(hitbox != null) {
           hitbox.put("id", i);
           noteHitboxes.add(hitbox);
@@ -59,15 +59,15 @@ public class InfoWindow extends PApplet {
         UIElement uie = elements.get(i);
         uie.render(this);
         switch(uie.id) {
-          case "note_x":
-            notes.get(selection.get(0)).x = int(((TextBox)uie).value);
-          break;
-          case "note_y":
-            notes.get(selection.get(0)).y = int(((TextBox)uie).value);
-          break;
-          case "note_cutDirection":
-            notes.get(selection.get(0)).cutDirection = int(((TextBox)uie).value);
-          break;
+          //case "note_x":
+          //  notes.get(selection.get(0)).x = int(((TextBox)uie).value);
+          //break;
+          //case "note_y":
+          //  notes.get(selection.get(0)).y = int(((TextBox)uie).value);
+          //break;
+          //case "note_cutDirection":
+          //  notes.get(selection.get(0)).cutDirection = int(((TextBox)uie).value);
+          //break;
           case "global_displayTracks":
             displayTracks = ((CheckBox)uie).checked;
           break;
@@ -116,16 +116,14 @@ public class InfoWindow extends PApplet {
     if(winner != -1) { //if a note was clicked
       Note n = notes.get(winner);
       if(shftPressed) {
-        if(!selection.contains(winner)) { //if the note is not selected
-          selection.add(winner); //select the note
+        if(!selection.containsNote(n)) { //if the note is not selected
+          selection.selectNote(winner); //select the note
         } else { //otherwise
-          for(int i = selection.size()-1; i >= 0; i--) { //find the note in the selecton and deselect it
-            if(selection.get(i) == winner) selection.remove(i);
-          }
+          selection.deselectNote(winner);
         }
       }
     }
-    for(int i = 0; i < elements.size(); i++) { //<>//
+    for(int i = 0; i < elements.size(); i++) { //<>// //<>//
       elements.get(i).mousePressed(mouseX, mouseY);
     }
   }
@@ -183,20 +181,20 @@ public class InfoWindow extends PApplet {
         else at_x += propertyImageSize;
       }
     }
-    if(selection.size() == 1) {
-      if(!UIContains(elements, "note_x")) {
-        Note n = notes.get(selection.get(0));
-        elements.add(new TextBox(50, 500, 150, 25, "note_x", str(n.x), "Line Layer"));
-        elements.add(new TextBox(50, 550, 150, 25, "note_y", str(n.y), "Line Index"));
-        elements.add(new TextBox(50, 600, 150, 25, "note_cutDirection", str(n.cutDirection), "Cut Direction"));
-      }
-    } else {
-      if(UIContains(elements, "note_x")) {
-        elements = removeElement(elements, "note_x");
-        elements = removeElement(elements, "note_y");
-        elements = removeElement(elements, "note_cutDirection");
-      }
-    }
+    //if(selection.size() == 1) {
+    //  if(!UIContains(elements, "note_x")) {
+    //    Note n = notes.get(selection.get(0));
+    //    elements.add(new TextBox(50, 500, 150, 25, "note_x", str(n.x), "Line Layer"));
+    //    elements.add(new TextBox(50, 550, 150, 25, "note_y", str(n.y), "Line Index"));
+    //    elements.add(new TextBox(50, 600, 150, 25, "note_cutDirection", str(n.cutDirection), "Cut Direction"));
+    //  }
+    //} else {
+    //  if(UIContains(elements, "note_x")) {
+    //    elements = removeElement(elements, "note_x");
+    //    elements = removeElement(elements, "note_y");
+    //    elements = removeElement(elements, "note_cutDirection");
+    //  }
+    //}
   }
   
   void drawGrid(int x, int y, int xSize, int ySize, int spacing) {

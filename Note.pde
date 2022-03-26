@@ -23,7 +23,6 @@ class Note {
   */
   boolean playedClickSound;
   JSONObject customData;
-  PVector[] prs;
   boolean dead;
   HashMap<String, Object> storedData;
   
@@ -38,7 +37,6 @@ class Note {
     this.cutDirection = cutDirection;
     customData = new JSONObject();
     playedClickSound = false;
-    prs = new PVector[7];
     dead = false;
     storedData = new HashMap<String, Object>();
   }
@@ -60,10 +58,10 @@ class Note {
     }
     return this;
   }
-  void render(boolean selected) {
+  void render() {
     if(dead) return;
     JSONObject trackCD = new JSONObject();
-    JSONObject tempCD = (JSONObject)customData;
+    JSONObject tempCD = copyJSONObject(customData);
     try {
     if(customData.containsKey("_track")) {
       trackCD = tracks.get((String)customData.get("_track")).properties;
@@ -101,7 +99,6 @@ class Note {
       //tempTime = time+getTimeFromAnimPosition(dapf(tempCD.get("_time")), getJumpDistance(njs, sbo));
       /*println(getTimeFromAnimPosition(dapf(tempCD.get("_time")), getJumpDistance(njs, sbo)))*/;
     }
-    prs[4] = new PVector(tempTime, 0);
     if(!(time > cursor-cutoffPoint && time < cursor+cutoffPoint)) return; //make sure the note is reasonably close to the cursor
     float localjd = jumpDistance;
     if(!changed) {
@@ -112,8 +109,8 @@ class Note {
     } else {
       localjd = getJumpDistance(njs, sbo);
     }
-    //pushMatrix();
-    //infoWindow.pushMatrix();
+    //
+    //infoWindow.
     //infoWindow.translate(notedispx, notedispy);
     noStroke();
     //infoWindow.noStroke();
@@ -136,6 +133,39 @@ class Note {
         animations.put(i, temp.get(i));
       }
     }
+    //lp = local property
+    float[] lp_position = new float[2];
+    lp_position[0] = x-2;
+    lp_position[1] = y;
+    if(customData.containsKey("_position")) {
+      JSONArray pos = (JSONArray)customData.get("_position");
+      lp_position[0] = dapf(pos.get(0));
+      lp_position[1] = dapf(pos.get(1));
+    }
+    float[] lp_rotation = new float[3];
+    if(customData.containsKey("_rotation")) {
+      JSONArray rot = (JSONArray)customData.get("_rotation");
+      lp_rotation[0] = dapf(rot.get(0));
+      lp_rotation[1] = dapf(rot.get(1));
+      lp_rotation[2] = dapf(rot.get(2));
+    }
+    float[] lp_localRotation = new float[3];
+    if(customData.containsKey("_localRotation")) {
+      JSONArray rot = (JSONArray)customData.get("_localRotation");
+      lp_localRotation[0] = dapf(rot.get(0));
+      lp_localRotation[1] = dapf(rot.get(1));
+      lp_localRotation[2] = dapf(rot.get(2));
+    }
+    float[] lp_scale = new float[3];
+    lp_scale[0] = 1;
+    lp_scale[1] = 1;
+    lp_scale[2] = 1;
+    if(customData.containsKey("_scale")) {
+      JSONArray sca = (JSONArray)customData.get("_scale");
+      lp_scale[0] = dapf(sca.get(0));
+      lp_scale[1] = dapf(sca.get(1));
+      if(sca.size() > 2) lp_scale[2] = dapf(sca.get(2));
+    }
       Set<String> keys = animations.keySet();
       for(String i : keys) {
         try {
@@ -144,28 +174,49 @@ class Note {
           else if(animations.get(i) instanceof String) a = new Animation(pointDefinitions.get((String)animations.get(i)), i);
           else {
             dead = true; //kill the note
-            println("whoeever the fuck made this map fucked up");
+            println("Expected a point definition or animation literal, got "+animations.get(i));
             return;
           }
           JSONArray arr = a.getPropertyAtPosition(animPosition);
-          if(trackCD.containsKey(a.property)) {
-            JSONArray temp = (JSONArray)trackCD.get(a.property);
-            switch(a.property) {
+          //if(customData.containsKey(i)) {
+          //  switch(i) {
+          //    case "_position":
+          //    case "_localRotation":
+          //    case "_rotation":
+          //    case "_definitePosition":
+          //    arr = addArrays(arr, (JSONArray)customData.get(i));
+          //    break;
+          //    case "_scale":
+          //    case "_dissolve":
+          //    case "_dissolveArrow":
+          //    case "_color":
+          //    case "_interactable":
+          //    arr = multArrays(arr, (JSONArray)customData.get(i));
+          //    break;
+          //    default:
+          //    arr = addArrays(arr, (JSONArray)customData.get(i));
+          //    break;
+          //  }
+          //}
+          //add together path and track animation
+          if(trackCD.containsKey(i)) {
+            JSONArray temp = (JSONArray)trackCD.get(i);
+            switch(i) {
               case "_position":
               case "_localRotation":
               case "_rotation":
               case "_definitePosition":
-              tempCD.put(a.property, addArrays(arr, temp));
+              tempCD.put(i, addArrays(arr, temp));
               break;
               case "_scale":
               case "_dissolve":
               case "_dissolveArrow":
               case "_color":
               case "_interactable":
-              tempCD.put(a.property, multArrays(arr, temp));
+              tempCD.put(i, multArrays(arr, temp));
               break;
               default:
-              tempCD.put(a.property, addArrays(arr, temp));
+              tempCD.put(i, addArrays(arr, temp));
               break;
             }
           }
@@ -183,15 +234,15 @@ class Note {
     if(tempCD.containsKey("_position")) { //position
       JSONArray pos = (JSONArray)tempCD.get("_position");
       if(pos.size() < 3) {
-        position = BeatwallsToPosition(new PVector(dapf(pos.get(0))+(x-2), dapf(pos.get(1))+y, tempTime), njs);
-        _position.x += dapf(pos.get(0));
-        _position.y += dapf(pos.get(1));
+        position = BeatwallsToPosition(new PVector(dapf(pos.get(0))+lp_position[0], dapf(pos.get(1))+lp_position[1], tempTime), njs);
+        _position.x = dapf(pos.get(0));
+        _position.y = dapf(pos.get(1));
       } else {
-        position = BeatwallsToPosition(new PVector(dapf(pos.get(0))+(x-2), dapf(pos.get(1))+y, tempTime), njs);
+        position = BeatwallsToPosition(new PVector(dapf(pos.get(0))+lp_position[0], dapf(pos.get(1))+lp_position[1], tempTime), njs);
         position.z += noteSize*dapf(pos.get(1));
-        _position.x += dapf(pos.get(0));
-        _position.y += dapf(pos.get(1));
-        _position.z += dapf(pos.get(2));
+        _position.x = dapf(pos.get(0));
+        _position.y = dapf(pos.get(1));
+        _position.z = dapf(pos.get(2));
       }
     }
     if(tempCD.containsKey("_definitePosition")) { //definitie position
@@ -204,7 +255,7 @@ class Note {
     }
     if(tempCD.containsKey("_scale")) { //scale
       JSONArray sca = (JSONArray)tempCD.get("_scale");
-      scale = new PVector(dapf(sca.get(0)), dapf(sca.get(1)), dapf(sca.get(2)));
+      scale = new PVector(dapf(sca.get(0))*lp_scale[0], dapf(sca.get(1))*lp_scale[1], dapf(sca.get(2))*lp_scale[2]);
     }
     if(tempCD.containsKey("_interactable")) { //interactable
       interactable = (dapf(tempCD.get("_interactable")) > 0.99);
@@ -213,21 +264,19 @@ class Note {
       Object o = tempCD.get("_rotation");
       if(isNumber(o)) {
         float rot = dapf(o);
-        rotation = new PVector(0, rot, 0);
+        rotation = new PVector(lp_rotation[0], rot+lp_rotation[1], lp_rotation[2]);
       } else {
         JSONArray rot = (JSONArray)o;
-        rotation = new PVector(dapf(rot.get(0)), dapf(rot.get(1)), dapf(rot.get(2)));
+        rotation = new PVector(dapf(rot.get(0))+lp_rotation[0], dapf(rot.get(1))+lp_rotation[1], dapf(rot.get(2))+lp_rotation[2]);
       }
-      prs[1] = rotation;
     }
     if(tempCD.containsKey("_localRotation")) { //local rotation
       JSONArray lr = (JSONArray)tempCD.get("_localRotation");
-      localRotation = new PVector(dapf(lr.get(0)), dapf(lr.get(1)), -dapf(lr.get(2)));
+      localRotation = new PVector(dapf(lr.get(0))+lp_localRotation[0], dapf(lr.get(1))+lp_localRotation[1], -dapf(lr.get(2))+lp_localRotation[2]);
     }
     if(tempCD.containsKey("_dissolve")) {
       dissolve = dapf(((JSONArray)tempCD.get("_dissolve")).get(0));
     }
-    prs[5] = new PVector(1, 0);
     if(tempCD.containsKey("_dissolveArrow")) {
       dissolveArrow = dapf(((JSONArray)tempCD.get("_dissolveArrow")).get(0));
     }
@@ -287,19 +336,16 @@ class Note {
     float[] hsb = Color.RGBtoHSB(round(red(colr)), round(green(colr)), round(blue(colr)), null);
     arrowColor = color(Color.HSBtoRGB(hsb[0], ((1-dissolve)/2), hsb[2]));
     if(dissolve > 0.99) arrowColor = color(255);
-    prs[0] = position;
-    prs[2] = scale;
-    prs[3] = localRotation;
     storedData.put("position", copyPVector(position));
     storedData.put("scale", copyPVector(scale));
     storedData.put("localRotation", copyPVector(localRotation));
     storedData.put("dissolve", dissolve);
-    storedData.put("dissolveArrow", prs[5].x);
+    storedData.put("dissolveArrow", dissolveArrow);
     storedData.put("color", colr);
     storedData.put("time", tempTime);
     storedData.put("rotation", rotation);
     storedData.put("arrowColor", arrowColor);
-    pushMatrix();
+    
       //infoWindow.fill(prs[6].x, prs[6].y, prs[6].z, dissolve*255);
       //infoWindow.translate(position.x, position.y);
       //infoWindow.rotate(radians(localRotation.z));
@@ -327,12 +373,12 @@ class Note {
       if(dissolveArrow > 0.01) {
         if(type != 3) renderQueue.add(new RenderArrow(position, rotation, localRotation, scale, dissolveArrow, colr, cutDirection == 8));
       }
-      if(selected) {
+      if(selection.containsNote(this)) {
         PVector tempScale = scale.copy();
         tempScale.mult(1.4);
         renderQueue.add(new RenderNote(position, rotation, localRotation, tempScale, 0.25, selectionColor, false));
       }
-      //popMatrix();
+      //
       //textMode(SHAPE);
       if(displayTracks) {
         if(customData.containsKey("_track")) {
@@ -347,8 +393,8 @@ class Note {
       }
       //textMode(MODEL);
     fill(255);
-    popMatrix();
-    //infoWindow.popMatrix();
+    
+    //infoWindow.
     //click sound stuff
     if(playing && type != 3 && interactable) {
       if(cursorStartedPlaying < time && cursor >= time && !playedClickSound) {
@@ -358,7 +404,7 @@ class Note {
       }
     }
   }
-  HashMap<String, Object> render2d(float scaling, float x, float y, boolean selected) {
+  HashMap<String, Object> render2d(float scaling, float x, float y) {
     try {
       if(storedData.containsKey("position")) {
         infoWindow.noStroke();
@@ -446,5 +492,13 @@ class Note {
     obj.put("_cutDirection", cutDirection);
     if(customData.size() > 0) obj.put("_customData", customData);
     return obj;
+  }
+  void fromJSON(JSONObject obj) {
+    if(obj.containsKey("_time")) time = dapf(obj.get("_time"));
+    if(obj.containsKey("_type")) type = dapi(obj.get("_type"));
+    if(obj.containsKey("_lineIndex")) x = dapi(obj.get("_lineIndex"));
+    if(obj.containsKey("_lineLayer")) y = dapi(obj.get("_lineLayer"));
+    if(obj.containsKey("_cutDirection")) cutDirection = dapi(obj.get("_cutDirection"));
+    if(obj.containsKey("_customData")) customData = (JSONObject)obj.get("_customData");
   }
 }

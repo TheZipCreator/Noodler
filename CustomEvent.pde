@@ -33,4 +33,10 @@ class CustomEvent implements Comparable {
     if(data.size() > 0) obj.put("_data", data);
     return obj;
   }
+  
+  void fromJSON(JSONObject obj) {
+    if(obj.containsKey("_time")) time = dapf(obj.get("_time"));
+    if(obj.containsKey("_type")) type = (String)obj.get("_type");
+    if(obj.containsKey("_data")) data = (JSONObject)obj.get("_data");
+  }
 }

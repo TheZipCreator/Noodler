@@ -1,4 +1,4 @@
-import beads.*; //<>//
+import beads.*; //<>// //<>//
 //import org.jaudiolibs.beads.*;
 
 import peasy.*;
@@ -72,7 +72,7 @@ HashMap<String, JSONArray> pointDefinitions;
 int notedispx = 200; //x and y of the note display
 int notedispy = 200;
 boolean iw_canrender = false;
-ArrayList<Integer> selection;
+Selection selection;
 color selectionColor;
 int propertyImageSize = 32; //size that custom events display at
 HashMap<String, PImage> propertyImages;
@@ -84,6 +84,7 @@ String betaText = "ALPHA BUILD 1";
 JSONObject mapjo;
 boolean saveSong = false;
 float lightingLerpAmount = 0.01;
+boolean enableAssignPlayerToTrack = false;
 
 void settings() {
   size(1200, 800, P3D);
@@ -93,7 +94,7 @@ void setup() {
   ellipseMode(CORNER);
   proplen = new HashMap<String, Integer>();
   simplePropertyNames = new HashMap<String, String>();
-  selection = new ArrayList<Integer>();
+  selection = new Selection();
   proplen.put("_position",3);
   proplen.put("_rotation",3);
   proplen.put("_localRotation",3);
@@ -216,6 +217,7 @@ void draw() {
     box(noteSize/10, 3.5*noteSize, noteSize/10);
     popMatrix();
     pushMatrix();
+    if(enableAssignPlayerToTrack) {
   int playerTrackIndex = getLastCustomEvent("AssignPlayerToTrack");
     if(playerTrackIndex != -1) {
       Track playerTrack = tracks.get((String)(customEvents.get(playerTrackIndex).data.get("_track")));
@@ -240,6 +242,7 @@ void draw() {
       rotateX(-radians(dapf(rotation.get(0))));
       rotateY(-radians(dapf(rotation.get(1))));
       rotateZ(-radians(dapf(rotation.get(2))));
+    }
     }
   //lighting
   rectMode(CENTER);
@@ -395,7 +398,7 @@ void draw() {
     }
     iw_canrender = false;
     for(int i = 0; i < notes.size(); i++) {
-      notes.get(i).render(selection.contains(i));
+      notes.get(i).render();
     }
     //sort the render queue by opacity
     Collections.sort(renderQueue);
@@ -970,4 +973,35 @@ float average(float... vals) {
     result += vals[i];
   }
   return result/float(vals.length-1);
+}
+boolean nearValue(float val1, float val2, float amount) {
+  return (val1 > val2-amount) && (val1 < val2+amount);
+}
+JSONObject copyJSONObject(JSONObject obj) { //makes a deep copy of a JSONObject (only use with JSONObjects read from a file)
+  JSONObject out = new JSONObject();
+  Set keys = obj.keySet();
+  for(Object i: keys) {
+    Object o = obj.get(i);
+    if(o instanceof JSONObject) out.put(i, copyJSONObject((JSONObject)o));
+    else if(o instanceof JSONArray) out.put(i, copyJSONArray((JSONArray)o));
+    else out.put(i, obj.get(i));
+  }
+  return out;
+}
+JSONArray copyJSONArray(JSONArray obj) { //makes a deep copy of a JSONArray (only use with JSONArrays read from a file)
+  JSONArray out = new JSONArray();
+  for(int i = 0; i < obj.size(); i++) {
+    Object o = obj.get(i);
+    if(o instanceof JSONObject) out.add(copyJSONObject((JSONObject)o));
+    else if(o instanceof JSONArray) out.add(copyJSONArray((JSONArray)o));
+    else out.add(obj.get(i));
+  }
+  return out;
+}
+JSONArray createJSONArray(Object... vals) {
+  JSONArray out = new JSONArray();
+  for(int i = 0; i < vals.length; i++) {
+    out.add(vals[i]);
+  }
+  return out;
 }
