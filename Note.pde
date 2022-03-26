@@ -186,17 +186,29 @@ class Note {
     }
     float[] lp_rotation = new float[3];
     if(customData.containsKey("_rotation") && animations.containsKey("_rotation")) {
-      JSONArray rot = (JSONArray)customData.get("_rotation");
-      lp_rotation[0] = dapf(rot.get(0));
-      lp_rotation[1] = dapf(rot.get(1));
-      lp_rotation[2] = dapf(rot.get(2));
+      Object o = customData.get("_rotation");
+      if(isNumber(o)) {
+        float rot = dapf(customData.get("_rotation"));
+        lp_rotation[1] = dapf(rot);
+      } else {
+        JSONArray rot = (JSONArray)customData.get("_rotation");
+        lp_rotation[0] = dapf(rot.get(0));
+        lp_rotation[1] = dapf(rot.get(1));
+        lp_rotation[2] = dapf(rot.get(2));
+      }
     }
     float[] lp_localRotation = new float[3];
     if(customData.containsKey("_localRotation") && animations.containsKey("_localRotation")) {
-      JSONArray rot = (JSONArray)customData.get("_localRotation");
-      lp_localRotation[0] = dapf(rot.get(0));
-      lp_localRotation[1] = dapf(rot.get(1));
-      lp_localRotation[2] = dapf(rot.get(2));
+      Object o = customData.get("_rotation");
+      if(isNumber(o)) {
+        float rot = dapf(customData.get("_rotation"));
+        lp_localRotation[1] = dapf(rot);
+      } else {
+        JSONArray rot = (JSONArray)customData.get("_rotation");
+        lp_localRotation[0] = dapf(rot.get(0));
+        lp_localRotation[1] = dapf(rot.get(1));
+        lp_localRotation[2] = dapf(rot.get(2));
+      }
     }
     float[] lp_scale = new float[3];
     lp_scale[0] = 1;
