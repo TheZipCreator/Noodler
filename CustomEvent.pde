@@ -25,4 +25,12 @@ class CustomEvent implements Comparable {
   String toString() {
     return time+" ";
   }
+  
+  JSONObject toJSON() {
+    JSONObject obj = new JSONObject();
+    obj.put("_time", time);
+    obj.put("_type", type);
+    if(data.size() > 0) obj.put("_data", data);
+    return obj;
+  }
 }

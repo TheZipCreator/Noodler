@@ -62,4 +62,12 @@ class Event { //lighting events. CustomEvents are their own thing
     }
     return c;
   }
+  JSONObject toJSON() {
+    JSONObject obj = new JSONObject();
+    obj.put("_time", time);
+    obj.put("_type", type);
+    obj.put("_value", value);
+    if(customData.size() > 0) obj.put("_customData", customData);
+    return obj;
+  }
 }

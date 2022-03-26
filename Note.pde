@@ -102,12 +102,12 @@ class Note {
       /*println(getTimeFromAnimPosition(dapf(tempCD.get("_time")), getJumpDistance(njs, sbo)))*/;
     }
     prs[4] = new PVector(tempTime, 0);
-    if(!(time > cursor-cutoffPoint && tempTime < cursor+cutoffPoint)) return; //make sure the note is reasonably close to the cursor
+    if(!(time > cursor-cutoffPoint && time < cursor+cutoffPoint)) return; //make sure the note is reasonably close to the cursor
     float localjd = jumpDistance;
     if(!changed) {
-      if(!decideToRender(tempTime-cursor, jumpDistance)) return;
+      if(!decideToRender_t(tempTime-cursor, time-cursor, jumpDistance)) return;
     }
-    else if(!decideToRender(tempTime-cursor, getJumpDistance(njs, sbo))) { 
+    else if(!decideToRender_t(tempTime-cursor, time-cursor, getJumpDistance(njs, sbo))) { 
       return;
     } else {
       localjd = getJumpDistance(njs, sbo);
@@ -179,9 +179,17 @@ class Note {
     PVector _position = new PVector(x-2, y, 0);
     if(tempCD.containsKey("_position")) { //position
       JSONArray pos = (JSONArray)tempCD.get("_position");
-      position = BeatwallsToPosition(new PVector(dapf(pos.get(0))+(x-2), dapf(pos.get(1))+y, tempTime), njs);
-      _position.x += dapf(pos.get(0));
-      _position.y += dapf(pos.get(1));
+      if(pos.size() < 3) {
+        position = BeatwallsToPosition(new PVector(dapf(pos.get(0))+(x-2), dapf(pos.get(1))+y, tempTime), njs);
+        _position.x += dapf(pos.get(0));
+        _position.y += dapf(pos.get(1));
+      } else {
+        position = BeatwallsToPosition(new PVector(dapf(pos.get(0))+(x-2), dapf(pos.get(1))+y, tempTime), njs);
+        position.z += noteSize*dapf(pos.get(1));
+        _position.x += dapf(pos.get(0));
+        _position.y += dapf(pos.get(1));
+        _position.z += dapf(pos.get(2));
+      }
     }
     if(tempCD.containsKey("_definitePosition")) { //definitie position
       JSONArray pos = (JSONArray)tempCD.get("_definitePosition");
@@ -425,5 +433,15 @@ class Note {
       throw e;
       
     }
+  }
+  JSONObject toJSON() {
+    JSONObject obj = new JSONObject();
+    obj.put("_time", time);
+    obj.put("_lineIndex", x);
+    obj.put("_lineLayer", y);
+    obj.put("_type", type);
+    obj.put("_cutDirection", cutDirection);
+    if(customData.size() > 0) obj.put("_customData", customData);
+    return obj;
   }
 }

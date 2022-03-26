@@ -23,6 +23,7 @@ public class InfoWindow extends PApplet {
     background(0);
     textMode(MODEL);
     elements.add(new CheckBox(50, 100, 25, 25, "global_displayTracks", false, "Display Tracks"));
+    elements.add(new FileSelector(300, 0, "global_songPath", songPath, true, "Pick Map"));
   }
   public void draw() {
     if(iw_canrender) {
@@ -36,8 +37,6 @@ public class InfoWindow extends PApplet {
       fill(255);
       textSize(32);
       text("Precision:"+precision, 0, 32);
-      textSize(16);
-      text(songPath, 300, 16);
       float scaling = 0.5;
       float noteSpacing = noteSize*scaling;
       float x = (width/2)-noteSpacing*2;
@@ -61,16 +60,23 @@ public class InfoWindow extends PApplet {
         uie.render(this);
         switch(uie.id) {
           case "note_x":
-          notes.get(selection.get(0)).x = int(((TextBox)uie).value);
+            notes.get(selection.get(0)).x = int(((TextBox)uie).value);
           break;
           case "note_y":
-          notes.get(selection.get(0)).y = int(((TextBox)uie).value);
+            notes.get(selection.get(0)).y = int(((TextBox)uie).value);
           break;
           case "note_cutDirection":
-          notes.get(selection.get(0)).cutDirection = int(((TextBox)uie).value);
+            notes.get(selection.get(0)).cutDirection = int(((TextBox)uie).value);
           break;
           case "global_displayTracks":
-          displayTracks = ((CheckBox)uie).checked;
+            displayTracks = ((CheckBox)uie).checked;
+          break;
+          case "global_songPath":
+            String path = ((FileSelector)uie).path;
+            if(!(path.equals(songPath))) {
+              //loadSong(songPath, "Standard", "ExpertPlus");
+              songPath = path;
+            }
           break;
           default:
           break;

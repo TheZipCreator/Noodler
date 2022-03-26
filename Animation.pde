@@ -35,6 +35,8 @@ class Animation {
         JSONArray a = this.keyframes[i];
         JSONArray b = this.keyframes[i-1];
         for(int j = 0; j < proplength; j++) {
+          float av = dapf(a.get(j));
+          float bv = dapf(b.get(j));
           
         }
       }

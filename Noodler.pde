@@ -16,6 +16,11 @@ import java.util.Set;
 import java.util.Collections;
 import java.util.HashSet;
 import java.awt.Color;
+import javafx.stage.FileChooser;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.*;
+import javafx.application.Platform;
 
 InfoWindow infoWindow;
 PeasyCam cam;
@@ -29,7 +34,10 @@ boolean shftPressed = false;
 boolean cameraActive = false;
 int state = 0; 
 JSONObject map;
-String songPath = "D:/Processing/Noodler/data/levels/noodle/C18H27NO3";
+String songPath = "D:\\things\\bsmaps\\Beat Saber_Data\\CustomWIPLevels\\netest";
+String difficulty = "ExpertPlus";
+String characteristic = "Standard";
+String loadedSong = songPath;
 float noteSize = 50;
 ArrayList<Note> notes;
 ArrayList<Obstacle> obstacles;
@@ -71,6 +79,11 @@ HashMap<String, PImage> propertyImages;
 HashMap<String, String> simplePropertyNames;
 boolean displayTracks = false; //toggles a thing where notes display their track ontop of them
 ArrayList<RenderElement> renderQueue;
+HashMap<String, PImage> UIElementImages;
+String betaText = "ALPHA BUILD 1";
+JSONObject mapjo;
+boolean saveSong = false;
+float lightingLerpAmount = 0.01;
 
 void settings() {
   size(1200, 800, P3D);
@@ -116,9 +129,6 @@ void setup() {
   simplePropertyNames.put("_offset","Fog Offset");
   simplePropertyNames.put("_startY","Fog Start Y");
   simplePropertyNames.put("_height","Fog Height");
-  leftColor = color(217, 22, 22);
-  rightColor = color(50, 172, 255);
-  obstacleColor = leftColor;
   ac = new AudioContext();
   String[] args = {"test"};
   infoWindow = new InfoWindow();
@@ -135,10 +145,9 @@ void setup() {
   notes = new ArrayList<Note>();
   obstacles = new ArrayList<Obstacle>();
   events = new ArrayList<Event>();
-  loadSong(songPath, "Standard", "ExpertPlus");
-  String audioPath = songPath+"\\song.mp3";
+  player = new SamplePlayer(ac, SampleManager.sample(sketchPath()+"/data/audio/hitsound.wav"));
+  loadSong(songPath, characteristic, difficulty);
   if(customEvents == null) throw new NullPointerException(); //this is just here to prevent the exception from being thrown somewhere else
-  player = new SamplePlayer(ac, SampleManager.sample(audioPath));
   player.setKillOnEnd(false);
   hitsound = new SamplePlayer(ac, SampleManager.sample(sketchPath()+"/data/audio/hitsound.wav"));
   hitsound.setKillOnEnd(false);
@@ -161,23 +170,30 @@ void setup() {
   backgroundColor = color(0,0,0);
   selectionColor = color(0, 255, 255);
   HashMap<String, PImage> propertyImages = new HashMap<String, PImage>();
+  UIElementImages = new HashMap<String, PImage>();
   File f = new File(sketchPath()+"/data/img/animation/");
-  println(f.getAbsolutePath());
   String[] files = f.list();
   for(int i = 0; i < files.length; i++) {
     println(files[i], files[i].split("\\.")[0]);
     propertyImages.put(files[i].split("\\.")[0], loadImage(sketchPath()+"/data/img/animation/"+files[i]));
+  }
+  f = new File(sketchPath()+"/data/img/UIElement/");
+  files = f.list();
+  for(int i = 0; i < files.length; i++) {
+    println(files[i], files[i].split("\\.")[0]);
+    UIElementImages.put(files[i].split("\\.")[0], loadImage(sketchPath()+"/data/img/UIElement/"+files[i]));
   }
   infoWindow.propertyImages = propertyImages;
   println("Notes: "+notes.size());
   println("Obstacles: "+obstacles.size());
 }
 void draw() {
-  //camera shit (I have to do this every frame because peasycam
+  try {
+  //camera shit (I have to do this every frame because peasycam)
   float fov = PI/3.0;
   float cameraZ = (height/2.0) / tan(fov/2.0);
   perspective(fov, float(width)/float(height), cameraZ/10.0, cameraZ*200.0);
-  background(red(backgroundColor)*0.75, green(backgroundColor)*0.75, blue(backgroundColor)*0.75);
+  background(red(backgroundColor), green(backgroundColor), blue(backgroundColor));
   fill(255);
   //box(100);
   //render markers
@@ -198,6 +214,8 @@ void draw() {
     pushMatrix();
     translate(-noteSize*2, noteSize*1, 0);
     box(noteSize/10, 4*noteSize, noteSize/10);
+    popMatrix();
+    pushMatrix();
   int playerTrackIndex = getLastCustomEvent("AssignPlayerToTrack");
     if(playerTrackIndex != -1) {
       Track playerTrack = tracks.get((String)(customEvents.get(playerTrackIndex).data.get("_track")));
@@ -212,16 +230,16 @@ void draw() {
         position.add(0);
       }
       if(properties.containsKey("_rotation")) {
-        rotation = (JSONArray)properties.get("_position");
+        rotation = (JSONArray)properties.get("_rotation");
       } else {
         rotation.add(0);
         rotation.add(0);
         rotation.add(0);
       }
-      translate((dapf(position.get(0)))*noteSize, dapf(position.get(1))*noteSize, dapf(position.get(2))*noteSize);
-      //rotateX(radians(dapf(rotation.get(0))));
-      //rotateY(radians(dapf(rotation.get(1))));
-      //rotateZ(radians(dapf(rotation.get(2))));
+      translate(-(dapf(position.get(0)))*noteSize, dapf(position.get(1))*noteSize, dapf(position.get(2))*noteSize);
+      rotateX(-radians(dapf(rotation.get(0))));
+      rotateY(-radians(dapf(rotation.get(1))));
+      rotateZ(-radians(dapf(rotation.get(2))));
     }
   //lighting
   rectMode(CENTER);
@@ -235,13 +253,13 @@ void draw() {
     float rightLaserSpeed = events.get(getLastEvent(13)).value*0.25;
     rightLaserRot = ((cursor*rightLaserSpeed)%360);
   }
+  //println("A", red(backgroundColor), green(backgroundColor), blue(backgroundColor));
   if(state == 0) {
-    backgroundColor = color(0);
     int backgroundLoc = -5000;
     if(getLastEvent(0) != -1) { 
       color c = events.get(getLastEvent(0)).getColor();
       if(alpha(c) != 0) {
-        backgroundColor = averageColors(c, backgroundColor);
+        backgroundColor = lerpColor(backgroundColor, c, lightingLerpAmount);
         stroke(red(c), green(c), blue(c), alpha(c));
         strokeWeight(25);
         pushMatrix();
@@ -254,7 +272,7 @@ void draw() {
     if(getLastEvent(1) != -1) {
       color c = events.get(getLastEvent(1)).getColor();
       if(alpha(c) != 0) {
-        backgroundColor = averageColors(c, backgroundColor);
+        backgroundColor = lerpColor(backgroundColor, c, lightingLerpAmount);
         fill(red(c), green(c), blue(c), alpha(c));
         stroke(red(c), green(c), blue(c), alpha(c));
         strokeWeight(0);
@@ -285,7 +303,7 @@ void draw() {
     if(getLastEvent(2) != -1) {
       color c = events.get(getLastEvent(2)).getColor();
       if(alpha(c) != 0) {
-        backgroundColor = averageColors(c, backgroundColor);
+        backgroundColor = lerpColor(backgroundColor, c, lightingLerpAmount);
         stroke(red(c), green(c), blue(c), alpha(c));
         strokeWeight(10);
         pushMatrix();
@@ -301,7 +319,7 @@ void draw() {
     if(getLastEvent(3) != -1) {
       color c = events.get(getLastEvent(3)).getColor();
       if(alpha(c) != 0) {
-        backgroundColor = averageColors(c, backgroundColor);
+        backgroundColor = lerpColor(backgroundColor, c, lightingLerpAmount);
         stroke(red(c), green(c), blue(c), alpha(c));
         strokeWeight(10);
         pushMatrix();
@@ -317,7 +335,7 @@ void draw() {
     if(getLastEvent(4) != -1) {
       color c = events.get(getLastEvent(4)).getColor();
       if(alpha(c) != 0) {
-        backgroundColor = averageColors(c, backgroundColor);
+        backgroundColor = lerpColor(backgroundColor, c, lightingLerpAmount);
         fill(red(c), green(c), blue(c), alpha(c));
         stroke(red(c), green(c), blue(c), alpha(c));
         strokeWeight(0);
@@ -345,6 +363,8 @@ void draw() {
         noStroke();
       }
     }
+    backgroundColor = lerpColor(backgroundColor, color(0), lightingLerpAmount*2.5);
+    //println("B", red(backgroundColor), green(backgroundColor), blue(backgroundColor));
     if(playing) {
       for(int i = 0; i < events.size(); i++) {
         if(events.get(i).time < cursor && !events.get(i).activated) {
@@ -367,12 +387,6 @@ void draw() {
     noStroke();
     fill(255);
     float renderLimit = jumpDistance/4;
-    popMatrix();
-    //update tracks
-    Set<String> tracksKeySet = tracks.keySet();
-    for(String i : tracksKeySet) {
-      tracks.get(i).update();
-    }
     //clear the render queue
     renderQueue = new ArrayList<RenderElement>();
     //add objects to the render queue
@@ -394,6 +408,35 @@ void draw() {
     if(playing) {
       cursor = cursorStartedPlaying+((Math.round(player.getPosition())-timeStartedPlaying)*(((bpm/60f))*0.001));
     }
+    popMatrix();
+    //update tracks (this is done last so that there's no flickering when the player is being animated)
+    Set<String> tracksKeySet = tracks.keySet();
+    for(String i : tracksKeySet) {
+      tracks.get(i).update();
+    }
+  }
+  if(!loadedSong.equals(songPath)) {
+    loadedSong = songPath;
+    loadSong(songPath, characteristic, difficulty);
+  }
+  textMode(SHAPE);
+  textSize(16);
+  fill(255, 64);
+  text(betaText, -(width/4), -(height/4));
+  textMode(MODEL);
+  } catch(Exception e) {
+    e.printStackTrace();
+  } catch(AssertionError e) {
+    e.printStackTrace();
+  }
+  if(saveSong) {
+    saveSong = false;
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        saveSong();
+      }
+    });
   }
 }
 
@@ -414,6 +457,11 @@ void keyPressed() {
         cam.lookAt(0, 0, 0);
         cam.rotateY(PI);
         cam.pan(0, -500);
+      }
+    }
+    if(keyCode == 'S') {
+      if(ctlPressed) {
+        saveSong = true;
       }
     }
     if(key == ' ') {
@@ -461,10 +509,17 @@ void mouseWheel(MouseEvent event) {
   }
 }
 void loadSong(String path, String characteristic, String difficulty) {
+  noLoop();
+  leftColor = color(217, 22, 22);
+  rightColor = color(50, 172, 255);
+  obstacleColor = leftColor;
+  String audioPath = songPath+"\\song.mp3";
+  player.setSample(SampleManager.sample(audioPath));
   songPath = path;
   JSONObject jo = new JSONObject();
   try {
     jo = (JSONObject)p.parse(new FileReader(songPath+"/Info.dat")); //load map
+    mapjo = (JSONObject)p.parse(new FileReader(songPath+"/Info.dat"));
   } catch(Exception e) {
     e.printStackTrace();
   }
@@ -502,6 +557,44 @@ void loadSong(String path, String characteristic, String difficulty) {
   } catch(Exception e) {
     throw e;
   }
+  loop();
+}
+void saveSong() {
+  JSONArray _notes = new JSONArray();
+  for(int i = 0; i < notes.size(); i++) {
+    _notes.add(notes.get(i).toJSON());
+  }
+  JSONArray _obstacles = new JSONArray();
+  for(int i = 0; i < obstacles.size(); i++) {
+    _obstacles.add(obstacles.get(i).toJSON());
+  }
+  JSONArray _events = new JSONArray();
+  for(int i = 0; i < events.size(); i++) {
+    _events.add(events.get(i).toJSON());
+  }
+  JSONArray _customEvents = new JSONArray();
+  for(int i = 0; i < customEvents.size(); i++) {
+    _customEvents.add(customEvents.get(i).toJSON());
+  }
+  mapjo.put("_notes", _notes);
+  mapjo.put("_obstacles", _obstacles);
+  mapjo.put("_events", _events);
+  if(mapjo.containsKey("_customData")) {
+    ((JSONObject)mapjo.get("_customData")).put("_customEvents", _customEvents);
+  } else {
+    JSONObject temp = new JSONObject();
+    temp.put("_customEvents", _customEvents);
+    mapjo.put("_customData", temp);
+  }
+  FileChooser chooser = new FileChooser();
+  File directory = new File(sketchPath());
+  chooser.setTitle("Choose an output file");
+  chooser.setInitialFileName(difficulty+characteristic);
+  chooser.setInitialDirectory(directory);
+  chooser.getExtensionFilters().addAll(new ExtensionFilter("Beat Saber Map Data Files", "*.dat"));
+  File f = chooser.showSaveDialog(null);
+  String[] toSave = {mapjo.toString()};
+  saveStrings(f.getAbsolutePath(), toSave);
 }
 void loadMap(String path) {
   noLoop();
@@ -687,6 +780,10 @@ boolean decideToRender(float time, float jd) {
   float renderLimit = jd/4;
   return (time > -renderLimit && time < renderLimit);
 }
+boolean decideToRender_t(float time, float time2, float jd) {
+  float renderLimit = jd/4;
+  return (time > -renderLimit && time2 < renderLimit);
+}
 
 float getAnimPosition(float time, float jd) {
   float renderLimit = jd/4;
@@ -723,11 +820,15 @@ JSONArray multArrays(JSONArray a, JSONArray b) {
   JSONArray c = new JSONArray();
   if(a.size() > b.size()) {
     for(int i = 0; i < b.size(); i++) {
-      c.add(dapf(a.get(i))*dapf(b.get(i)));
+      float val = 1;
+      if(i < b.size()) val = dapf(b.get(i));
+      c.add(dapf(a.get(i))*val);
     }
   } else {
     for(int i = 0; i < a.size(); i++) {
-      c.add(dapf(a.get(i))*dapf(b.get(i)));
+      float val = 1;
+      if(i < a.size()) val = dapf(a.get(i));
+      c.add(dapf(b.get(i))*val);
     }
   }
   return c;

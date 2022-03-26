@@ -98,8 +98,11 @@ class RenderArrow extends RenderElement {
 }
 
 class RenderObstacle extends RenderElement {
-  RenderObstacle(PVector position, PVector rotation, PVector localRotation, PVector scale, float opacity, color colr) {
+  boolean custom = false;
+  
+  RenderObstacle(PVector position, PVector rotation, PVector localRotation, PVector scale, float opacity, color colr, boolean custom) {
     super(position, rotation, localRotation, scale, opacity, colr);
+    this.custom = custom;
   }
   
   @Override
@@ -113,6 +116,7 @@ class RenderObstacle extends RenderElement {
     translate(0, -noteSize*2, 0);
     translate(noteSize/2, 0, 0);
     translate(position.x+(scale.x/2), position.y+scale.y, position.z-scale.z);
+    //else translate(position.x+(scale.x/2), position.y+(scale.y*1.5), position.z-(scale.z/2));
     rotateX(radians(localRotation.x));
     rotateY(radians(localRotation.y));
     rotateZ(radians(localRotation.z));

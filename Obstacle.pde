@@ -70,11 +70,11 @@ class Obstacle {
       //tempTime = time+getTimeFromAnimPosition(dapf(tempCD.get("_time")), getJumpDistance(njs, sbo));
       /*println(getTimeFromAnimPosition(dapf(tempCD.get("_time")), getJumpDistance(njs, sbo)))*/;
     }
-    if(!(tempTime > cursor-cutoffPoint && tempTime < cursor+cutoffPoint)) return; //make sure the note is reasonably close to the cursor
-    if(!changed) if(!decideToRender(time-cursor, jumpDistance)) return;
-    else if(!decideToRender(time-cursor, getJumpDistance(njs, sbo))) return;
+    //if(!(tempTime > cursor-cutoffPoint && tempTime < cursor+cutoffPoint)) return; //make sure the note is reasonably close to the cursor
+    if(!changed) if(!decideToRender_t(time-cursor+duration, time-cursor, jumpDistance)) return;
+    else if(!decideToRender_t(time-cursor+duration, time-cursor, getJumpDistance(njs, sbo))) return;
     fill(red(obstacleColor), green(obstacleColor), blue(obstacleColor), 128);
-    PVector position = BeatwallsToPosition(new PVector(x-1.5, 3, time), njs);
+    PVector position = BeatwallsToPosition(new PVector(x-2.5, 3, time), njs);
     PVector scale = new PVector(this.width*noteSize, ((1-type)+1)*1.5*noteSize, duration*editorScale*noteSize);
     PVector rotation = new PVector(0, 0, 0);
     boolean interactable = true;
@@ -133,11 +133,13 @@ class Obstacle {
     for(String i : keys2) {
       if(!tempCD.containsKey(i)) tempCD.put(i, (JSONArray)trackCD.get(i));
     }
+    boolean custom = false;
     if(tempCD.containsKey("_scale")) { //scale
       JSONArray sca = (JSONArray)tempCD.get("_scale");
       if(sca.size() > 2) scale = new PVector(dapf(sca.get(0))*noteSize, dapf(sca.get(1))*noteSize, dapf(sca.get(2))*noteSize);
       else scale = new PVector(dapf(sca.get(0))*noteSize, dapf(sca.get(1))*noteSize, scale.z);
       h = scale.y/noteSize;
+      custom = true;
     }
     PVector _position = new PVector(0, h, 0);
     if(tempCD.containsKey("_position")) { //position
@@ -182,7 +184,16 @@ class Obstacle {
     }
     if(dissolve < 0) dissolve = -dissolve*2;
     if(dissolve > 0.01) {
-      renderQueue.add(new RenderObstacle(position, rotation, localRotation, scale, dissolve*0.5, colr));
+      renderQueue.add(new RenderObstacle(position, rotation, localRotation, scale, dissolve*0.5, colr, custom));
     }
+  }
+  JSONObject toJSON() {
+    JSONObject obj = new JSONObject();
+    obj.put("_time", time);
+    obj.put("_lineIndex", x);
+    obj.put("_type", type);
+    obj.put("_duration", duration);
+    if(customData.size() > 0) obj.put("_customData", customData);
+    return obj;
   }
 }

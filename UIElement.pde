@@ -147,6 +147,46 @@ class CheckBox extends UIElement {
   }
 }
 
+class FileSelector extends UIElement {
+  String path;
+  String title;
+  boolean directoryOrFile;
+  
+  FileSelector(int x, int y, String id, String path, boolean directoryOrFile /*true = directory, false = file*/, String title) {
+    super(x, y, 32, 32, id);
+    this.path = path;
+    this.directoryOrFile = directoryOrFile;
+    this.title = title;
+  }
+  
+  @Override
+  void render(PApplet app) {
+    app.image(UIElementImages.get("FileSelector"), x, y);
+    app.textSize(16);
+    app.text(path, x+xSize+2, y+(ySize/2)+8);
+  }
+  @Override
+  void mousePressed(int mouseX, int mouseY) {
+    if(mouseX > x && mouseX < x+xSize && mouseY > y && mouseY < ySize) {
+      File f = new File("c:\\");
+      if(directoryOrFile) {
+        DirectoryChooser chooser = new DirectoryChooser();
+        File directory = new File(sketchPath());
+        chooser.setInitialDirectory(directory);
+        chooser.setTitle(title);
+        f = chooser.showDialog(null);
+      } else {
+        FileChooser chooser = new FileChooser();
+        File directory = new File(sketchPath());
+        chooser.setTitle(title);
+        chooser.setInitialDirectory(directory);
+        f = chooser.showOpenDialog(null);
+      }
+      path = f.getAbsolutePath();
+    }
+  }
+}
+
 boolean isPrintableChar( char c ) { //stolen from stackoverflow
     Character.UnicodeBlock block = Character.UnicodeBlock.of( c );
     return (!Character.isISOControl(c)) &&
