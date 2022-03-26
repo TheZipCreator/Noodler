@@ -74,8 +74,9 @@ class Obstacle {
     if(!changed) if(!decideToRender_t(time-cursor+duration, time-cursor, jumpDistance)) return;
     else if(!decideToRender_t(time-cursor+duration, time-cursor, getJumpDistance(njs, sbo))) return;
     fill(red(obstacleColor), green(obstacleColor), blue(obstacleColor), 128);
-    PVector position = BeatwallsToPosition(new PVector(x-2.5, 3, time), njs);
-    PVector scale = new PVector(this.width*noteSize, ((1-type)+1)*1.5*noteSize, duration*editorScale*noteSize);
+    PVector position = BeatwallsToPosition(new PVector(x-2, 3.5, time), njs); //x-2 because beatwalls position is 2 offset from x, and 3 because that's the top row
+    float height = type == 0 ? 3.5 : 1.5;
+    PVector scale = new PVector(this.width*noteSize, height*noteSize, duration*editorScale*noteSize);
     PVector rotation = new PVector(0, 0, 0);
     boolean interactable = true;
     PVector localRotation = new PVector(0, 0, 0);
@@ -90,10 +91,13 @@ class Obstacle {
     //println(animPosition);
     float dissolve = 1;
     JSONObject animations = new JSONObject();
-    if(customData.containsKey("_animation")) {
-      animations = (JSONObject)customData.get("_animation");
-    } else if(customData.containsKey("_track")){
-      animations = tracks.get((String)customData.get("_track")).getMostRecentPathAnimation(cursor);
+    if(customData.containsKey("_animation")) animations = (JSONObject)customData.get("_animation");
+    if(customData.containsKey("_track")){
+      JSONObject temp = tracks.get((String)customData.get("_track")).getMostRecentPathAnimation(cursor);
+      Set<String> keys = temp.keySet();
+      for(String i: keys) {
+        animations.put(i, temp.get(i));
+      }
     }
       Set<String> keys = animations.keySet();
       for(String i : keys) {
@@ -110,6 +114,7 @@ class Obstacle {
               case "_rotation":
               case "_definitePosition":
               tempCD.put(a.property, addArrays(arr, temp));
+              
               break;
               case "_scale":
               case "_dissolve":
@@ -138,18 +143,18 @@ class Obstacle {
       JSONArray sca = (JSONArray)tempCD.get("_scale");
       if(sca.size() > 2) scale = new PVector(dapf(sca.get(0))*noteSize, dapf(sca.get(1))*noteSize, dapf(sca.get(2))*noteSize);
       else scale = new PVector(dapf(sca.get(0))*noteSize, dapf(sca.get(1))*noteSize, scale.z);
-      h = scale.y/noteSize;
+      height = scale.y/noteSize;
       custom = true;
     }
-    PVector _position = new PVector(0, h, 0);
+    PVector _position = new PVector(0, height, 0);
     if(tempCD.containsKey("_position")) { //position
       JSONArray pos = (JSONArray)tempCD.get("_position");
       _position = new PVector(_position.x+dapf(pos.get(0)), _position.y+dapf(pos.get(1)));
-      position = BeatwallsToPosition(new PVector(dapf(pos.get(0))-0.5, dapf(pos.get(1))+h-0.5, tempTime), njs);
+      position = BeatwallsToPosition(new PVector(_position.x, _position.y, tempTime), njs);
     }
     if(tempCD.containsKey("_definitePosition")) { //definite position
       JSONArray pos = (JSONArray)tempCD.get("_definitePosition");
-      PVector temp = BeatwallsToPosition(new PVector(_position.x+dapf(pos.get(0))-0.5, _position.y+dapf(pos.get(1))+h-0.5, tempTime), njs);
+      PVector temp = BeatwallsToPosition(new PVector(_position.x+dapf(pos.get(0)), _position.y+dapf(pos.get(1)), tempTime), njs);
       float z = -dapf(pos.get(2));
       //temp.z = -(((z*noteSize)-(cursor*noteSize)));
       temp.z = z*noteSize;
@@ -192,6 +197,7 @@ class Obstacle {
     obj.put("_time", time);
     obj.put("_lineIndex", x);
     obj.put("_type", type);
+    obj.put("_width", this.width);
     obj.put("_duration", duration);
     if(customData.size() > 0) obj.put("_customData", customData);
     return obj;

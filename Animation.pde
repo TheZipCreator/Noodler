@@ -31,15 +31,15 @@ class Animation {
     if(property.equals("_rotation") || property.equals("_localRotation")) {
       //fix rotation
       int proplength = proplen.get(property);
-      for(int i = 1; i < this.keyframes.length; i++) {
-        JSONArray a = this.keyframes[i];
-        JSONArray b = this.keyframes[i-1];
-        for(int j = 0; j < proplength; j++) {
-          float av = dapf(a.get(j));
-          float bv = dapf(b.get(j));
-          
-        }
-      }
+      //for(int i = 1; i < this.keyframes.length; i++) {
+      //  JSONArray a = this.keyframes[i];
+      //  JSONArray b = this.keyframes[i-1];
+      //  for(int j = 0; j < proplength; j++) {
+      //    float av = dapf(a.get(j));
+      //    float bv = dapf(b.get(j));
+      //    //todo: actually fix it
+      //  }
+      //}
     }
   }
   

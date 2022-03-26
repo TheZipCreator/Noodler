@@ -208,12 +208,12 @@ void draw() {
       popMatrix();
     }
     pushMatrix(); //render boxes on the side
-    translate(noteSize*2, noteSize*1, 0);
-    box(noteSize/10, 4*noteSize, noteSize/10);
+    translate(noteSize*2, noteSize*1.25, 0);
+    box(noteSize/10, 3.5*noteSize, noteSize/10);
     popMatrix();
     pushMatrix();
-    translate(-noteSize*2, noteSize*1, 0);
-    box(noteSize/10, 4*noteSize, noteSize/10);
+    translate(-noteSize*2, noteSize*1.25, 0);
+    box(noteSize/10, 3.5*noteSize, noteSize/10);
     popMatrix();
     pushMatrix();
   int playerTrackIndex = getLastCustomEvent("AssignPlayerToTrack");
