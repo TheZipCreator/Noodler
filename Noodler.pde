@@ -86,6 +86,7 @@ JSONObject mapjo;
 boolean saveSong = false;
 float lightingLerpAmount = 0.01;
 boolean enableAssignPlayerToTrack = false;
+String sketchPath;
 
 void settings() {
   size(1200, 800, P3D);
@@ -147,6 +148,7 @@ void setup() {
   notes = new ArrayList<Note>();
   obstacles = new ArrayList<Obstacle>();
   events = new ArrayList<Event>();
+  sketchPath = sketchPath(); //sketchPath variable exists because for some reason child PApplets can't access sketchPath
   player = new SamplePlayer(ac, SampleManager.sample(sketchPath()+"/data/audio/hitsound.wav"));
   loadSong(songPath, characteristic, difficulty);
   if(customEvents == null) throw new NullPointerException(); //this is just here to prevent the exception from being thrown somewhere else
@@ -239,7 +241,7 @@ void draw() {
         rotation.add(0);
         rotation.add(0);
       }
-      translate(-(dapf(position.get(0)))*noteSize, dapf(position.get(1))*noteSize, dapf(position.get(2))*noteSize);
+      translate(-(dapf(position.get(0)))*noteSize, -dapf(position.get(1))*noteSize, dapf(position.get(2))*noteSize);
       rotateX(-radians(dapf(rotation.get(0))));
       rotateY(-radians(dapf(rotation.get(1))));
       rotateZ(-radians(dapf(rotation.get(2))));
@@ -515,6 +517,7 @@ void mouseWheel(MouseEvent event) {
 }
 void loadSong(String path, String characteristic, String difficulty) {
   noLoop();
+  cursor = 0;
   leftColor = color(217, 22, 22);
   rightColor = color(50, 172, 255);
   obstacleColor = leftColor;

@@ -62,12 +62,14 @@ class Note {
     if(dead) return;
     JSONObject trackCD = new JSONObject();
     JSONObject tempCD = copyJSONObject(customData);
+    HashSet<String> sharedProperties = new HashSet<String>();
     try {
     if(customData.containsKey("_track")) {
       trackCD = tracks.get((String)customData.get("_track")).properties;
       Set<String> keys = trackCD.keySet();
       for(String i : keys) {
         tempCD.put(i, (JSONArray)trackCD.get(i));
+        sharedProperties.add(i);
       }
     }
     } catch(Exception e) {
@@ -132,6 +134,7 @@ class Note {
       JSONObject temp = track.getMostRecentPathAnimation(cursor);
       Set<String> keys = temp.keySet();
       for(String i: keys) {
+        sharedProperties.add(i);
         animations.put(i, temp.get(i));
       }
     }
@@ -143,7 +146,7 @@ class Note {
           else if(animations.get(i) instanceof String) a = new Animation(pointDefinitions.get((String)animations.get(i)), i);
           else {
             dead = true; //kill the note
-            println("Expected a point definition or animation literal, got "+animations.get(i));
+            println("Expected a point definition or animation object, got "+animations.get(i));
             return;
           }
           JSONArray arr = a.getPropertyAtPosition(animPosition);
@@ -175,17 +178,21 @@ class Note {
           throw e;
         }
       }
+      Set<String> keys2 = trackCD.keySet();
+    for(String i : keys2) {
+      if(!tempCD.containsKey(i)) tempCD.put(i, (JSONArray)trackCD.get(i));
+    }
       //lp = local property
     float[] lp_position = new float[2];
     lp_position[0] = x-2;
     lp_position[1] = y;
-    if(customData.containsKey("_position") && (animations.containsKey("_position") || animations.containsKey("_definitePosition"))) {
+    if(customData.containsKey("_position") && sharedProperties.contains("_position")) {
       JSONArray pos = (JSONArray)customData.get("_position");
       lp_position[0] = dapf(pos.get(0));
       lp_position[1] = dapf(pos.get(1));
     }
     float[] lp_rotation = new float[3];
-    if(customData.containsKey("_rotation") && animations.containsKey("_rotation")) {
+    if(customData.containsKey("_rotation") && sharedProperties.contains("_rotation")) {
       Object o = customData.get("_rotation");
       if(isNumber(o)) {
         float rot = dapf(customData.get("_rotation"));
@@ -198,7 +205,7 @@ class Note {
       }
     }
     float[] lp_localRotation = new float[3];
-    if(customData.containsKey("_localRotation") && animations.containsKey("_localRotation")) {
+    if(customData.containsKey("_localRotation") && sharedProperties.contains("_localRotation")) {
       Object o = customData.get("_rotation");
       if(isNumber(o)) {
         float rot = dapf(customData.get("_rotation"));
@@ -214,15 +221,11 @@ class Note {
     lp_scale[0] = 1;
     lp_scale[1] = 1;
     lp_scale[2] = 1;
-    if(customData.containsKey("_scale") && animations.containsKey("_scale")) {
+    if(customData.containsKey("_scale") && sharedProperties.contains("_scale")) {
       JSONArray sca = (JSONArray)customData.get("_scale");
       lp_scale[0] = dapf(sca.get(0));
       lp_scale[1] = dapf(sca.get(1));
       if(sca.size() > 2) lp_scale[2] = dapf(sca.get(2));
-    }
-    Set<String> keys2 = trackCD.keySet();
-    for(String i : keys2) {
-      if(!tempCD.containsKey(i)) tempCD.put(i, (JSONArray)trackCD.get(i));
     }
     PVector _position = new PVector(x-2, y, 0);
     if(tempCD.containsKey("_position")) { //position

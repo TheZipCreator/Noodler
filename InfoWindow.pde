@@ -24,9 +24,12 @@ public class InfoWindow extends PApplet {
     elements = new ArrayList<UIElement>();
     background(0);
     textMode(MODEL);
-    elements.add(new CheckBox(300, 100, 25, 25, "global_displayTracks", false, "Display Tracks"));
-    elements.add(new CheckBox(300, 130, 25, 25, "global_alwaysOnTop", false, "Always On Top"));
-    elements.add(new FileSelector(300, 0, "global_songPath", songPath, true, "Pick Map"));
+    elements.add(new CheckBox(300, 130, 25, 25, "global_displayTracks", false, "Display Tracks"));
+    elements.add(new CheckBox(300, 160, 25, 25, "global_alwaysOnTop", false, "Always On Top"));
+    elements.add(new CheckBox(300, 190, 25, 25, "global_enableAssignPlayerToTrack", false, "Enable AssignPlayerToTrack Events"));
+    elements.add(new TextBox(300, 100, 200, 25, "global_difficulty", difficulty, "Difficulty"));
+    elements.add(new TextBox(510, 100, 200, 25, "global_characteristic", characteristic, "Characteristic"));
+    elements.add(new FileSelector(300, 0, "global_songPath", songPath, true, sketchPath+"/data/levels", "Pick Map"));
   }
   public void draw() {
     if(iw_canrender) {
@@ -88,6 +91,15 @@ public class InfoWindow extends PApplet {
               isAlwaysOnTop = aot;
             }
           break;
+          case "global_enableAssignPlayerToTrack":
+            enableAssignPlayerToTrack = (((CheckBox)uie).checked);
+          break;  
+          case "global_difficulty":
+            difficulty = ((TextBox)uie).value;
+          break;
+          case "global_characteristic":
+            characteristic = ((TextBox)uie).value;
+          break;
           default:
           break;
         }
@@ -134,7 +146,7 @@ public class InfoWindow extends PApplet {
       }
     }
     for(int i = 0; i < elements.size(); i++) { //<>// //<>//
-      elements.get(i).mousePressed(mouseX, mouseY);
+      if(elements.get(i).mousePressed(mouseX, mouseY)) return;
     }
   }
   public void keyPressed() {

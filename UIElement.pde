@@ -21,8 +21,8 @@ class UIElement {
   void keyPressed(char key, int keyCode) {
     
   }
-  void mousePressed(int mouseX, int mouseY) {
-    
+  boolean mousePressed(int mouseX, int mouseY) {
+    return false;
   }
   boolean hasId(String testId) {
     return testId.equals(id);
@@ -67,6 +67,8 @@ class TextBox extends UIElement {
   }
   @Override
   void keyPressed(char key, int keyCode) {
+    if(shftPressed) key = Character.toUpperCase(key);
+    else key = Character.toLowerCase(key);
     if(isPrintableChar(key)) {
       tempValue += key;
     } else {
@@ -75,12 +77,14 @@ class TextBox extends UIElement {
     }
   }
   @Override
-  void mousePressed(int mouseX, int mouseY) {
+  boolean mousePressed(int mouseX, int mouseY) {
     if(mouseX > x && mouseX < x+xSize && mouseY > y && mouseY < y+ySize) {
       println(value);
       beingEdited = true;
+      return true;
     } else {
       stopEditing();
+      return false;
     }
   }
 }
@@ -108,14 +112,6 @@ class UImage extends UIElement {
       app.text(hover, app.mouseX+2, app.mouseY-4);
     }
   }
-  @Override
-  void keyPressed(char key, int keyCode) {
-    
-  }
-  @Override
-  void mousePressed(int mouseX, int mouseY) {
-    
-  }
 }
 
 class CheckBox extends UIElement {
@@ -140,23 +136,27 @@ class CheckBox extends UIElement {
     }
   }
   @Override
-  void mousePressed(int mouseX, int mouseY) {
+  boolean mousePressed(int mouseX, int mouseY) {
     if(mouseX > x && mouseX < x+xSize && mouseY > y && mouseY < y+ySize) {
       checked = !checked;
+      return true;
     }
+    return false;
   }
 }
 
 class FileSelector extends UIElement {
   String path;
   String title;
+  String defaultPath;
   boolean directoryOrFile;
   
-  FileSelector(int x, int y, String id, String path, boolean directoryOrFile /*true = directory, false = file*/, String title) {
+  FileSelector(int x, int y, String id, String path, boolean directoryOrFile /*true = directory, false = file*/, String defaultPath, String title) {
     super(x, y, 32, 32, id);
     this.path = path;
     this.directoryOrFile = directoryOrFile;
     this.title = title;
+    this.defaultPath = defaultPath;
   }
   
   @Override
@@ -167,23 +167,33 @@ class FileSelector extends UIElement {
     app.text(path, x+xSize+2, y+(ySize/2)+8);
   }
   @Override
-  void mousePressed(int mouseX, int mouseY) {
+  boolean mousePressed(int mouseX, int mouseY) {
     if(mouseX > x && mouseX < x+xSize && mouseY > y && mouseY < ySize) {
-      File f = new File("c:\\");
-      if(directoryOrFile) {
-        DirectoryChooser chooser = new DirectoryChooser();
-        File directory = new File(sketchPath());
-        chooser.setInitialDirectory(directory);
-        chooser.setTitle(title);
-        f = chooser.showDialog(null);
-      } else {
-        FileChooser chooser = new FileChooser();
-        File directory = new File(sketchPath());
-        chooser.setTitle(title);
-        chooser.setInitialDirectory(directory);
-        f = chooser.showOpenDialog(null);
+      try {
+        File f = new File("c:\\");
+        if(directoryOrFile) {
+          DirectoryChooser chooser = new DirectoryChooser();
+          File directory = new File(defaultPath);
+          chooser.setInitialDirectory(directory);
+          chooser.setTitle(title);
+          f = chooser.showDialog(null);
+        } else {
+          FileChooser chooser = new FileChooser();
+          File directory = new File(defaultPath);
+          chooser.setTitle(title);
+          chooser.setInitialDirectory(directory);
+          f = chooser.showOpenDialog(null);
+        }
+        path = f.getAbsolutePath();
+      } catch(NullPointerException e) {
+        //no folder was selected
+      } catch(IllegalArgumentException e) {
+        println(defaultPath, path);
+        throw e;
       }
-      path = f.getAbsolutePath();
+      return true;
+    } else {
+      return false;
     }
   }
 }
