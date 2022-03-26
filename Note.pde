@@ -135,39 +135,6 @@ class Note {
         animations.put(i, temp.get(i));
       }
     }
-    //lp = local property
-    float[] lp_position = new float[2];
-    lp_position[0] = x-2;
-    lp_position[1] = y;
-    if(customData.containsKey("_position")) {
-      JSONArray pos = (JSONArray)customData.get("_position");
-      lp_position[0] = dapf(pos.get(0));
-      lp_position[1] = dapf(pos.get(1));
-    }
-    float[] lp_rotation = new float[3];
-    if(customData.containsKey("_rotation")) {
-      JSONArray rot = (JSONArray)customData.get("_rotation");
-      lp_rotation[0] = dapf(rot.get(0));
-      lp_rotation[1] = dapf(rot.get(1));
-      lp_rotation[2] = dapf(rot.get(2));
-    }
-    float[] lp_localRotation = new float[3];
-    if(customData.containsKey("_localRotation")) {
-      JSONArray rot = (JSONArray)customData.get("_localRotation");
-      lp_localRotation[0] = dapf(rot.get(0));
-      lp_localRotation[1] = dapf(rot.get(1));
-      lp_localRotation[2] = dapf(rot.get(2));
-    }
-    float[] lp_scale = new float[3];
-    lp_scale[0] = 1;
-    lp_scale[1] = 1;
-    lp_scale[2] = 1;
-    if(customData.containsKey("_scale")) {
-      JSONArray sca = (JSONArray)customData.get("_scale");
-      lp_scale[0] = dapf(sca.get(0));
-      lp_scale[1] = dapf(sca.get(1));
-      if(sca.size() > 2) lp_scale[2] = dapf(sca.get(2));
-    }
       Set<String> keys = animations.keySet();
       for(String i : keys) {
         try {
@@ -180,26 +147,6 @@ class Note {
             return;
           }
           JSONArray arr = a.getPropertyAtPosition(animPosition);
-          //if(customData.containsKey(i)) {
-          //  switch(i) {
-          //    case "_position":
-          //    case "_localRotation":
-          //    case "_rotation":
-          //    case "_definitePosition":
-          //    arr = addArrays(arr, (JSONArray)customData.get(i));
-          //    break;
-          //    case "_scale":
-          //    case "_dissolve":
-          //    case "_dissolveArrow":
-          //    case "_color":
-          //    case "_interactable":
-          //    arr = multArrays(arr, (JSONArray)customData.get(i));
-          //    break;
-          //    default:
-          //    arr = addArrays(arr, (JSONArray)customData.get(i));
-          //    break;
-          //  }
-          //}
           //add together path and track animation
           if(trackCD.containsKey(i)) {
             JSONArray temp = (JSONArray)trackCD.get(i);
@@ -228,6 +175,39 @@ class Note {
           throw e;
         }
       }
+      //lp = local property
+    float[] lp_position = new float[2];
+    lp_position[0] = x-2;
+    lp_position[1] = y;
+    if(customData.containsKey("_position") && animations.containsKey("_position")) {
+      JSONArray pos = (JSONArray)customData.get("_position");
+      lp_position[0] = dapf(pos.get(0));
+      lp_position[1] = dapf(pos.get(1));
+    }
+    float[] lp_rotation = new float[3];
+    if(customData.containsKey("_rotation") && animations.containsKey("_rotation")) {
+      JSONArray rot = (JSONArray)customData.get("_rotation");
+      lp_rotation[0] = dapf(rot.get(0));
+      lp_rotation[1] = dapf(rot.get(1));
+      lp_rotation[2] = dapf(rot.get(2));
+    }
+    float[] lp_localRotation = new float[3];
+    if(customData.containsKey("_localRotation") && animations.containsKey("_localRotation")) {
+      JSONArray rot = (JSONArray)customData.get("_localRotation");
+      lp_localRotation[0] = dapf(rot.get(0));
+      lp_localRotation[1] = dapf(rot.get(1));
+      lp_localRotation[2] = dapf(rot.get(2));
+    }
+    float[] lp_scale = new float[3];
+    lp_scale[0] = 1;
+    lp_scale[1] = 1;
+    lp_scale[2] = 1;
+    if(customData.containsKey("_scale") && animations.containsKey("_scale")) {
+      JSONArray sca = (JSONArray)customData.get("_scale");
+      lp_scale[0] = dapf(sca.get(0));
+      lp_scale[1] = dapf(sca.get(1));
+      if(sca.size() > 2) lp_scale[2] = dapf(sca.get(2));
+    }
     Set<String> keys2 = trackCD.keySet();
     for(String i : keys2) {
       if(!tempCD.containsKey(i)) tempCD.put(i, (JSONArray)trackCD.get(i));

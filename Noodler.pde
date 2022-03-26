@@ -35,6 +35,7 @@ boolean cameraActive = false;
 int state = 0; 
 JSONObject map;
 String songPath = "D:\\things\\bsmaps\\Beat Saber_Data\\CustomWIPLevels\\netest";
+//String songPath = "D:\\Processing\\Noodler\\data\\levels\\noodle\\loveyou";
 String difficulty = "ExpertPlus";
 String characteristic = "Standard";
 String loadedSong = songPath;
