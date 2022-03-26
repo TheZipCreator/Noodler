@@ -161,6 +161,19 @@ class Obstacle {
       if(!tempCD.containsKey(i)) tempCD.put(i, (JSONArray)trackCD.get(i));
     }
     //lp = local property
+    float[] lp_position = new float[2];
+    lp_position[0] = x-2;
+    lp_position[1] = height;
+    if(customData.containsKey("_position") && (animations.containsKey("_position") || animations.containsKey("_definitePosition"))) {
+      JSONArray pos = (JSONArray)customData.get("_position");
+      lp_position[0] = dapf(pos.get(0));
+      lp_position[1] = dapf(pos.get(1));
+      if(tempCD.containsKey("_scale")) {
+        JSONArray sca = (JSONArray)tempCD.get("_scale");
+        lp_position[1] -= height;
+        lp_position[1] += dapf(sca.get(1));
+      }
+    }
     float[] lp_rotation = new float[3];
     if(customData.containsKey("_rotation") && animations.containsKey("_rotation")) {
       Object o = customData.get("_rotation");
@@ -196,18 +209,6 @@ class Obstacle {
       lp_scale[0] = dapf(sca.get(0));
       lp_scale[1] = dapf(sca.get(1));
       if(sca.size() > 2) lp_scale[2] = dapf(sca.get(2));
-    }
-    float[] lp_position = new float[2];
-    lp_position[0] = x-2;
-    lp_position[1] = height;
-    if(customData.containsKey("_position") && animations.containsKey("_position")) {
-      JSONArray pos = (JSONArray)customData.get("_position");
-      lp_position[0] = dapf(pos.get(0));
-      lp_position[1] = dapf(pos.get(1));
-      if(tempCD.containsKey("_scale")) {
-        JSONArray sca = (JSONArray)tempCD.get("_scale");
-        lp_position[1] = dapf(sca.get(1));
-      }
     }
     boolean custom = false;
     if(tempCD.containsKey("_scale")) { //scale

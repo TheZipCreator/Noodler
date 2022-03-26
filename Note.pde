@@ -179,7 +179,7 @@ class Note {
     float[] lp_position = new float[2];
     lp_position[0] = x-2;
     lp_position[1] = y;
-    if(customData.containsKey("_position") && animations.containsKey("_position")) {
+    if(customData.containsKey("_position") && (animations.containsKey("_position") || animations.containsKey("_definitePosition"))) {
       JSONArray pos = (JSONArray)customData.get("_position");
       lp_position[0] = dapf(pos.get(0));
       lp_position[1] = dapf(pos.get(1));

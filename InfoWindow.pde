@@ -12,7 +12,8 @@ public class InfoWindow extends PApplet {
   }
   public void setup() {
     surface.setResizable(true);
-    frame.setResizable(true);
+    frame.setResizable(true); //I know that I should use surface.setResizable(), but if I use that then it doesn't work correctly for some reason
+    surface.setAlwaysOnTop(true);
     surface.setTitle("Info");
     surface.setLocation(-900, 0);
     infoWindow.ellipseMode(CORNER);
@@ -22,7 +23,7 @@ public class InfoWindow extends PApplet {
     elements = new ArrayList<UIElement>();
     background(0);
     textMode(MODEL);
-    elements.add(new CheckBox(50, 100, 25, 25, "global_displayTracks", false, "Display Tracks"));
+    elements.add(new CheckBox(width/2, 100, 25, 25, "global_displayTracks", false, "Display Tracks"));
     elements.add(new FileSelector(300, 0, "global_songPath", songPath, true, "Pick Map"));
   }
   public void draw() {
@@ -39,7 +40,7 @@ public class InfoWindow extends PApplet {
       text("Precision:"+precision, 0, 32);
       float scaling = 0.5;
       float noteSpacing = noteSize*scaling;
-      float x = (width/2)-noteSpacing*2;
+      float x = noteSpacing*2;
       float y = 100;
       noteHitboxes = new ArrayList<HashMap<String, Object>>();
       for(int i = 0; i < notes.size(); i++) {
