@@ -170,7 +170,7 @@ class Obstacle {
       lp_position[1] = dapf(pos.get(1));
       if(tempCD.containsKey("_scale")) {
         JSONArray sca = (JSONArray)tempCD.get("_scale");
-        lp_position[1] -= height;
+        //lp_position[1] -= height;
         lp_position[1] += dapf(sca.get(1));
       }
     }

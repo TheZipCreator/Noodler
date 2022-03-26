@@ -14,7 +14,7 @@ public class InfoWindow extends PApplet {
   public void setup() {
     surface.setResizable(true);
     frame.setResizable(true); //I know that I should use surface.setResizable(), but if I use that then it doesn't work correctly for some reason
-    surface.setAlwaysOnTop(true);
+    surface.setAlwaysOnTop(false);
     surface.setTitle("Info");
     surface.setLocation(-900, 0);
     infoWindow.ellipseMode(CORNER);
