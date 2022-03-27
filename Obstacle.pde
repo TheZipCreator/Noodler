@@ -166,6 +166,10 @@ class Obstacle {
     float[] lp_position = new float[2];
     lp_position[0] = x-2;
     lp_position[1] = height;
+    if(tempCD.containsKey("_scale")) {
+      JSONArray sca = (JSONArray)customData.get("_scale");
+      lp_position[1] = dapf(sca.get(1));
+    }
     if(customData.containsKey("_position") && sharedProperties.contains("_position")) {
       JSONArray pos = (JSONArray)customData.get("_position");
       lp_position[0] = dapf(pos.get(0));
