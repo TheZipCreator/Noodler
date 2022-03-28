@@ -231,6 +231,7 @@ class Note {
     if(tempCD.containsKey("_position")) { //position
       JSONArray pos = (JSONArray)tempCD.get("_position");
       if(pos.size() < 3) {
+        println(pos, lp_position.length);
         position = BeatwallsToPosition(new PVector(dapf(pos.get(0))+lp_position[0], dapf(pos.get(1))+lp_position[1], tempTime), njs);
         _position.x = dapf(pos.get(0));
         _position.y = dapf(pos.get(1));

@@ -83,11 +83,12 @@ HashMap<String, String> simplePropertyNames;
 boolean displayTracks = false; //toggles a thing where notes display their track ontop of them
 ArrayList<RenderElement> renderQueue;
 HashMap<String, PImage> UIElementImages;
-String betaText = "ALPHA BUILD 1";
+String versionText = "ALPHA BUILD 1";
 JSONObject mapjo;
 boolean saveSong = false;
 float lightingLerpAmount = 0.01;
 boolean enableAssignPlayerToTrack = false;
+boolean renderMarkers = true;
 String sketchPath;
 String codeFontPath = "/data/font/SourceCodePro-Medium.ttf";
 String textFontPath = "/data/font/Roboto-Medium.ttf";
@@ -210,6 +211,7 @@ void draw() {
   fill(255);
   //box(100);
   //render markers
+  if(renderMarkers) {
     fill(255);
     textSize(32);
     float offset = -(cursor-floor(cursor));
@@ -228,6 +230,7 @@ void draw() {
     translate(-noteSize*2, noteSize*1.25, 0);
     box(noteSize/10, 3.5*noteSize, noteSize/10);
     popMatrix();
+  }
     pushMatrix();
     if(enableAssignPlayerToTrack) {
   int playerTrackIndex = getLastCustomEvent("AssignPlayerToTrack");
@@ -438,7 +441,7 @@ void draw() {
   textMode(SHAPE);
   textSize(16);
   fill(255, 64);
-  text(betaText, -(width/4), -(height/4));
+  text(versionText, -(width/4), -(height/4));
   textMode(MODEL);
   } catch(Exception e) {
     //e.printStackTrace();
@@ -579,6 +582,14 @@ void loadSong(String path, String characteristic, String difficulty) {
   loop();
 }
 void saveSong() {
+  if(mapjo.containsKey("_customData")) {
+    JSONObject _editors = new JSONObject();
+    _editors.put("_lastEditedBy", "Noodler");
+    JSONObject noodler = new JSONObject();
+    noodler.put("version", versionText);
+    _editors.put("Noodler", noodler);
+    ((JSONObject)mapjo.get("_customData")).put("_editors", _editors);
+  }
   JSONArray _notes = new JSONArray();
   for(int i = 0; i < notes.size(); i++) {
     _notes.add(notes.get(i).toJSON());
