@@ -30,6 +30,8 @@ SamplePlayer player;
 SamplePlayer hitsound;
 //AudioDecoder ad;
 
+final int MAX_RENDER_ELEMENTS = 2000;
+
 boolean shftPressed = false;
 boolean cameraActive = false;
 int state = 0; 
@@ -87,6 +89,10 @@ boolean saveSong = false;
 float lightingLerpAmount = 0.01;
 boolean enableAssignPlayerToTrack = false;
 String sketchPath;
+String codeFontPath = "/data/font/SourceCodePro-Medium.ttf";
+String textFontPath = "/data/font/Roboto-Medium.ttf";
+PFont codeFont;
+PFont textFont;
 
 void settings() {
   size(1200, 800, P3D);
@@ -133,9 +139,6 @@ void setup() {
   simplePropertyNames.put("_startY","Fog Start Y");
   simplePropertyNames.put("_height","Fog Height");
   ac = new AudioContext();
-  String[] args = {"test"};
-  infoWindow = new InfoWindow();
-  PApplet.runSketch(args, infoWindow);
   surface.setResizable(true);
   //surface.setLocation(225, 50);
   cam = new PeasyCam(this, 0, 0, 0, 500);
@@ -187,12 +190,18 @@ void setup() {
     println(files[i], files[i].split("\\.")[0]);
     UIElementImages.put(files[i].split("\\.")[0], loadImage(sketchPath()+"/data/img/UIElement/"+files[i]));
   }
-  infoWindow.propertyImages = propertyImages;
   println("Notes: "+notes.size());
   println("Obstacles: "+obstacles.size());
+  codeFont = createFont(sketchPath()+codeFontPath, 16);
+  textFont = createFont(sketchPath()+textFontPath, 64);
+  infoWindow = new InfoWindow();
+  String[] args = {"test"};
+  PApplet.runSketch(args, infoWindow);
+  infoWindow.propertyImages = propertyImages;
 }
 void draw() {
   try {
+  textFont(textFont);
   //camera shit (I have to do this every frame because peasycam)
   float fov = PI/3.0;
   float cameraZ = (height/2.0) / tan(fov/2.0);
@@ -432,7 +441,9 @@ void draw() {
   text(betaText, -(width/4), -(height/4));
   textMode(MODEL);
   } catch(Exception e) {
-    e.printStackTrace();
+    //e.printStackTrace();
+    println("Error");
+    throw e;
   } catch(AssertionError e) {
     e.printStackTrace();
   }
@@ -1009,4 +1020,7 @@ JSONArray createJSONArray(Object... vals) {
     out.add(vals[i]);
   }
   return out;
+}
+void addRenderElement(RenderElement e) {
+  if(renderQueue.size() < MAX_RENDER_ELEMENTS) renderQueue.add(e);
 }

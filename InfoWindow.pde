@@ -6,6 +6,9 @@ public class InfoWindow extends PApplet {
   public int oldWidth;
   public int oldHeight;
   public boolean isAlwaysOnTop = false;
+  public boolean enabled = true;
+  public PFont textFont;
+  public PFont codeFont;
   
   public void settings() {
     size(800, 800, FX2D); //renderer is FX2D to avoid a crash when resizing window
@@ -30,88 +33,103 @@ public class InfoWindow extends PApplet {
     elements.add(new TextBox(300, 100, 200, 25, "global_difficulty", difficulty, "Difficulty"));
     elements.add(new TextBox(510, 100, 200, 25, "global_characteristic", characteristic, "Characteristic"));
     elements.add(new FileSelector(300, 0, "global_songPath", songPath, true, sketchPath+"/data/levels", "Pick Map"));
+    ArrayList<String> c = new ArrayList<String>();
+    c.add("Lorem ipsum dor amet");
+    c.add("The quick brown fox jumped over the lazy dog");
+    c.add("Almost before we knew it, we had left the ground.");
+    elements.add(new CodeArea(100, 500, width-200, 200, "global_testCodeArea", c));
+    codeFont = createFont(sketchPath+codeFontPath, 16);
+    textFont = createFont(sketchPath+textFontPath, 64);
   }
   public void draw() {
-    if(iw_canrender) {
-      iw_canrender = false;
-      if(width != oldWidth || height != oldHeight) {
-        oldWidth = width;
-        oldHeight = height;
-        tempImage = new PImage(width, height);
-      }
-      background(0);
-      fill(255);
-      textSize(32);
-      text("Precision:"+precision, 0, 32);
-      float scaling = 0.5;
-      float noteSpacing = noteSize*scaling;
-      float x = noteSpacing*2;
-      float y = 100;
-      noteHitboxes = new ArrayList<HashMap<String, Object>>();
-      for(int i = 0; i < notes.size(); i++) {
-        HashMap<String, Object> hitbox = notes.get(i).render2d(scaling, x, y);
-        if(hitbox != null) {
-          hitbox.put("id", i);
-          noteHitboxes.add(hitbox);
+    try {
+      if(iw_canrender && enabled) {
+        textFont(textFont);
+        iw_canrender = false;
+        if(width != oldWidth || height != oldHeight) {
+          oldWidth = width;
+          oldHeight = height;
+          tempImage = new PImage(width, height);
         }
-      }
-      strokeWeight(1);
-      stroke(255);
-      drawGrid(round(x-(2*noteSpacing)), round(y-(2*noteSpacing)), 8, 7, round(noteSpacing));
-      stroke(0, 255, 0);
-      drawGrid(round(x), round(y), 4, 3, round(noteSpacing));
-      updateMenu();
-      for(int i = 0; i < elements.size(); i++) {
-        UIElement uie = elements.get(i);
-        uie.render(this);
-        switch(uie.id) {
-          //case "note_x":
-          //  notes.get(selection.get(0)).x = int(((TextBox)uie).value);
-          //break;
-          //case "note_y":
-          //  notes.get(selection.get(0)).y = int(((TextBox)uie).value);
-          //break;
-          //case "note_cutDirection":
-          //  notes.get(selection.get(0)).cutDirection = int(((TextBox)uie).value);
-          //break;
-          case "global_displayTracks":
-            displayTracks = ((CheckBox)uie).checked;
-          break;
-          case "global_songPath":
-            String path = ((FileSelector)uie).path;
-            if(!(path.equals(songPath))) {
-              //loadSong(songPath, "Standard", "ExpertPlus");
-              songPath = path;
-            }
-          break;
-          case "global_alwaysOnTop":
-            boolean aot = ((CheckBox)uie).checked;
-            if(isAlwaysOnTop != aot) {
-              surface.setAlwaysOnTop(aot);
-              isAlwaysOnTop = aot;
-            }
-          break;
-          case "global_enableAssignPlayerToTrack":
-            enableAssignPlayerToTrack = (((CheckBox)uie).checked);
-          break;  
-          case "global_difficulty":
-            difficulty = ((TextBox)uie).value;
-          break;
-          case "global_characteristic":
-            characteristic = ((TextBox)uie).value;
-          break;
-          default:
-          break;
+        background(0);
+        fill(255);
+        textSize(32);
+        text("Precision:"+precision, 0, 32);
+        float scaling = 0.5;
+        float noteSpacing = noteSize*scaling;
+        float x = noteSpacing*2;
+        float y = 100;
+        noteHitboxes = new ArrayList<HashMap<String, Object>>();
+        for(int i = 0; i < notes.size(); i++) {
+          HashMap<String, Object> hitbox = notes.get(i).render2d(scaling, x, y);
+          if(hitbox != null) {
+            hitbox.put("id", i);
+            noteHitboxes.add(hitbox);
+          }
         }
+        strokeWeight(1);
+        stroke(255);
+        drawGrid(round(x-(2*noteSpacing)), round(y-(2*noteSpacing)), 8, 7, round(noteSpacing));
+        stroke(0, 255, 0);
+        drawGrid(round(x), round(y), 4, 3, round(noteSpacing));
+        updateMenu();
+        for(int i = 0; i < elements.size(); i++) {
+          UIElement uie = elements.get(i);
+          uie.render(this);
+          switch(uie.id) {
+            //case "note_x":
+            //  notes.get(selection.get(0)).x = int(((TextBox)uie).value);
+            //break;
+            //case "note_y":
+            //  notes.get(selection.get(0)).y = int(((TextBox)uie).value);
+            //break;
+            //case "note_cutDirection":
+            //  notes.get(selection.get(0)).cutDirection = int(((TextBox)uie).value);
+            //break;
+            case "global_displayTracks":
+              displayTracks = ((CheckBox)uie).checked;
+            break;
+            case "global_songPath":
+              String path = ((FileSelector)uie).path;
+              if(!(path.equals(songPath))) {
+                //loadSong(songPath, "Standard", "ExpertPlus");
+                songPath = path;
+              }
+            break;
+            case "global_alwaysOnTop":
+              boolean aot = ((CheckBox)uie).checked;
+              if(isAlwaysOnTop != aot) {
+                surface.setAlwaysOnTop(aot);
+                isAlwaysOnTop = aot;
+              }
+            break;
+            case "global_enableAssignPlayerToTrack":
+              enableAssignPlayerToTrack = (((CheckBox)uie).checked);
+            break;  
+            case "global_difficulty":
+              difficulty = ((TextBox)uie).value;
+            break;
+            case "global_characteristic":
+              characteristic = ((TextBox)uie).value;
+            break;
+            case "global_enabled":
+              enabled = ((CheckBox)uie).checked;
+            break;
+            default:
+            break;
+          }
+        }
+        for(int i = 0; i < elements.size(); i++) {
+          elements.get(i).renderSecond(this);
+        }
+        loadPixels();
+        tempImage.pixels = pixels;
+        tempImage.updatePixels();
+      } else {
+        image(tempImage, 0, 0);
       }
-      for(int i = 0; i < elements.size(); i++) {
-        elements.get(i).renderSecond(this);
-      }
-      loadPixels();
-      tempImage.pixels = pixels;
-      tempImage.updatePixels();
-    } else {
-      image(tempImage, 0, 0);
+    } catch(AssertionError e) {
+      println("Assertion Error");
     }
   }
   public void mousePressed() {

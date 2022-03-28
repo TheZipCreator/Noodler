@@ -198,9 +198,162 @@ class FileSelector extends UIElement {
   }
 }
 
+class CodeArea extends UIElement {
+  public final static int TEXT_SIZE = 16;
+  public final static float TEXT_WIDTH = 9.6;
+  ArrayList<String> value;
+  ArrayList<String> tempValue;
+  boolean beingEdited;
+  int cursorX;
+  int cursorY;
+  int cursorTimer = 0;
+  
+  CodeArea(int x, int y, int xSize, int ySize, String id,  ArrayList<String> value) {
+    super(x, y, xSize, ySize, id);
+    this.value = value;
+    tempValue = new ArrayList<String>(value);
+    cursorX = 1;
+    cursorY = 1;
+  }
+  @Override
+  void render(PApplet app) {
+    cursorTimer++;
+    app.fill(32, 0, 32);
+    app.strokeWeight(3);
+    if(beingEdited) app.stroke(0, 0, 255);
+    else app.stroke(255);
+    app.rect(x, y, xSize, ySize);
+    app.textSize(TEXT_SIZE);
+    app.textFont(codeFont);
+    app.fill(255);
+    ArrayList<String> disp = beingEdited ? tempValue : value;
+    for(int i = 0; i < disp.size(); i++) {
+      app.text(disp.get(i), x, y+(TEXT_SIZE*(i+1)));
+    }
+    app.strokeWeight(1);
+    if(beingEdited && cursorTimer%60 < 30) {
+      app.stroke(255);
+      app.line(x+(cursorX*TEXT_WIDTH), y+(cursorY*TEXT_SIZE), x+(cursorX*TEXT_WIDTH), y+((cursorY+1)*TEXT_SIZE));
+    }
+    app.textFont(textFont);
+  }
+  void keyPressed(char key, int keyCode) {
+    cursorTimer = 0;
+    if(shftPressed) key = Character.toUpperCase(key);
+    else key = Character.toLowerCase(key);
+    if(isPrintableChar(key)) {
+      tempValue.set(cursorY, insertChar(key, tempValue.get(cursorY), cursorX));
+      cursorX++;
+    } else {
+      if(keyCode == RIGHT) {
+        cursorX++;
+        if(cursorX > tempValue.get(cursorY).length()) {
+          cursorX = 0;
+          cursorY++;
+          if(cursorY > tempValue.size()-1) cursorY--;
+        }
+      }
+      if(keyCode == LEFT) {
+        cursorX--;
+        if(cursorX < 0) {
+          cursorY--;
+          if(cursorY < 0) {
+            cursorX = 0;
+            cursorY++;
+          } else {
+            cursorX = tempValue.get(cursorY).length();
+          }
+        }
+      }
+      if(keyCode == UP) {
+        cursorY--;
+        if(cursorY < 0) cursorY = 0;
+        if(cursorX > tempValue.get(cursorY).length()) cursorX = tempValue.get(cursorY).length();
+      }
+      if(keyCode == DOWN) {
+        cursorY++;
+        if(cursorY > tempValue.size()-1) cursorY = tempValue.size()-1;
+        if(cursorX > tempValue.get(cursorY).length()) cursorX = tempValue.get(cursorY).length();
+      }
+      if(keyCode == ENTER) {
+        String s = tempValue.get(cursorY);
+        tempValue.set(cursorY, s.substring(0, cursorX));
+        int numSpaces = 0;
+        for(int i = 0; i < s.length(); i++) {
+          if(s.charAt(i) == ' ') numSpaces++;
+          else break;
+        }
+        s = s.substring(cursorX, s.length());
+        for(int i = 0; i < numSpaces; i++) {
+          s = ' '+s;
+        }
+        cursorX = numSpaces;
+        cursorY++;
+        tempValue.add(cursorY, s);
+      }
+      if(keyCode == TAB) {
+        keyPressed(' ', ' ');
+        keyPressed(' ', ' ');
+      }
+      if(keyCode == BACKSPACE) {
+        if(cursorX > 0) {
+          tempValue.set(cursorY, removeChar(tempValue.get(cursorY), cursorX));
+          cursorX--;
+        } else {
+          if(cursorY > 0) {
+            String s = tempValue.get(cursorY);
+            tempValue.remove(cursorY);
+            cursorY--;
+            cursorX = tempValue.get(cursorY).length();
+            tempValue.set(cursorY, tempValue.get(cursorY)+s);
+          }
+        }
+      }
+    }
+  }
+  @Override
+  boolean mousePressed(int mouseX, int mouseY) {
+    cursorTimer = 0;
+    if(mouseX > x && mouseX < x+xSize && mouseY > y && mouseY < y+ySize) {
+      beingEdited = true;
+      cursorX = floor((mouseX-x)/TEXT_WIDTH);
+      cursorY = (mouseY-y)/TEXT_SIZE;
+      if(cursorY > tempValue.size()-1) {
+        cursorY = tempValue.size()-1;
+        cursorX = tempValue.get(tempValue.size()-1).length();
+      }
+      if(cursorX > tempValue.get(cursorY).length()) {
+        cursorX = tempValue.get(cursorY).length();
+      }
+      return true;
+    } else {
+      stopEditing();
+      return false;
+    }
+  }
+  void stopEditing() {
+    value = new ArrayList<String>(tempValue);
+    beingEdited = false;
+  }
+  String getValue() {
+    String out = "";
+    for(int i = 0; i < value.size(); i++) {
+      out += value.get(i)+"\n";
+    }
+    return out;
+  }
+}
+
 boolean isPrintableChar( char c ) { //stolen from stackoverflow
     Character.UnicodeBlock block = Character.UnicodeBlock.of( c );
     return (!Character.isISOControl(c)) &&
             block != null &&
             block != Character.UnicodeBlock.SPECIALS;
+}
+
+String insertChar(char c, String s, int index) {
+  return s.substring(0, index)+c+s.substring(index, s.length());
+}
+String removeChar(String s, int index) {
+  return s.substring(0, index-1)+s.substring(index, s.length());
 }

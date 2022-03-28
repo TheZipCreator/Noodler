@@ -206,12 +206,12 @@ class Note {
     }
     float[] lp_localRotation = new float[3];
     if(customData.containsKey("_localRotation") && sharedProperties.contains("_localRotation")) {
-      Object o = customData.get("_rotation");
+      Object o = customData.get("_localRotation");
       if(isNumber(o)) {
-        float rot = dapf(customData.get("_rotation"));
+        float rot = dapf(customData.get("_localRotation"));
         lp_localRotation[1] = dapf(rot);
       } else {
-        JSONArray rot = (JSONArray)customData.get("_rotation");
+        JSONArray rot = (JSONArray)customData.get("_localRotation");
         lp_localRotation[0] = dapf(rot.get(0));
         lp_localRotation[1] = dapf(rot.get(1));
         lp_localRotation[2] = dapf(rot.get(2));
@@ -252,7 +252,8 @@ class Note {
     }
     if(tempCD.containsKey("_scale")) { //scale
       JSONArray sca = (JSONArray)tempCD.get("_scale");
-      scale = new PVector(dapf(sca.get(0))*lp_scale[0], dapf(sca.get(1))*lp_scale[1], dapf(sca.get(2))*lp_scale[2]);
+      sca = multArrays(sca, createJSONArray(lp_scale[0], lp_scale[1], lp_scale[2]));
+      scale = new PVector(dapf(sca.get(0)), dapf(sca.get(1)), dapf(sca.get(2)));
     }
     if(tempCD.containsKey("_interactable")) { //interactable
       interactable = (dapf(tempCD.get("_interactable")) > 0.99);
@@ -364,16 +365,16 @@ class Note {
         dissolve *= 0.25;
         dissolveArrow *= 0.25;
       }
-      if(dissolve > 0.01) renderQueue.add(new RenderNote(position, rotation, localRotation, scale, dissolve, colr, type == 3));
+      if(dissolve > 0.01) addRenderElement(new RenderNote(position, rotation, localRotation, scale, dissolve, colr, type == 3));
       //fill(red(colr), green(colr), blue(colr), alpha(colr));
       //box(scale.x*noteSize*0.8, scale.y*noteSize*0.8, scale.z*noteSize*0.8);
       if(dissolveArrow > 0.01) {
-        if(type != 3) renderQueue.add(new RenderArrow(position, rotation, localRotation, scale, dissolveArrow, colr, cutDirection == 8));
+        if(type != 3) addRenderElement(new RenderArrow(position, rotation, localRotation, scale, dissolveArrow, colr, cutDirection == 8));
       }
       if(selection.containsNote(this)) {
         PVector tempScale = scale.copy();
         tempScale.mult(1.4);
-        renderQueue.add(new RenderNote(position, rotation, localRotation, tempScale, 0.25, selectionColor, false));
+        addRenderElement(new RenderNote(position, rotation, localRotation, tempScale, 0.25, selectionColor, false));
       }
       //
       //textMode(SHAPE);

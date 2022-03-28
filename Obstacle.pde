@@ -165,11 +165,7 @@ class Obstacle {
     }
     float[] lp_position = new float[2];
     lp_position[0] = x-2;
-    lp_position[1] = height;
-    if(tempCD.containsKey("_scale")) {
-      JSONArray sca = (JSONArray)customData.get("_scale");
-      lp_position[1] = dapf(sca.get(1));
-    }
+    lp_position[1] = 0;
     if(customData.containsKey("_position") && sharedProperties.contains("_position")) {
       JSONArray pos = (JSONArray)customData.get("_position");
       lp_position[0] = dapf(pos.get(0));
@@ -190,12 +186,12 @@ class Obstacle {
     }
     float[] lp_localRotation = new float[3];
     if(customData.containsKey("_localRotation") && sharedProperties.contains("_localRotation")) {
-      Object o = customData.get("_rotation");
+      Object o = customData.get("_localRotation");
       if(isNumber(o)) {
-        float rot = dapf(customData.get("_rotation"));
+        float rot = dapf(customData.get("_localRotation"));
         lp_localRotation[1] = dapf(rot);
       } else {
-        JSONArray rot = (JSONArray)customData.get("_rotation");
+        JSONArray rot = (JSONArray)customData.get("_localRotation");
         lp_localRotation[0] = dapf(rot.get(0));
         lp_localRotation[1] = dapf(rot.get(1));
         lp_localRotation[2] = dapf(rot.get(2));
@@ -214,6 +210,7 @@ class Obstacle {
     boolean custom = false;
     if(tempCD.containsKey("_scale")) { //scale
       JSONArray sca = (JSONArray)tempCD.get("_scale");
+      sca = multArrays(sca, createJSONArray(lp_scale[0], lp_scale[1], lp_scale[2]));
       if(sca.size() > 2) scale = new PVector(dapf(sca.get(0))*noteSize, dapf(sca.get(1))*noteSize, dapf(sca.get(2))*noteSize);
       else scale = new PVector(dapf(sca.get(0))*noteSize, dapf(sca.get(1))*noteSize, scale.z);
       height = scale.y/noteSize;
@@ -222,7 +219,8 @@ class Obstacle {
     PVector _position = new PVector(0, 0, 0);
     if(tempCD.containsKey("_position")) { //position
       JSONArray pos = (JSONArray)tempCD.get("_position");
-      _position = new PVector(lp_position[0]+dapf(pos.get(0)), lp_position[1]+dapf(pos.get(1)));
+      pos = addArrays(pos, createJSONArray(lp_position[0], lp_position[1]));
+      _position = new PVector(dapf(pos.get(0)), dapf(pos.get(1)));
       position = BeatwallsToPosition(new PVector(_position.x, _position.y, tempTime), njs);
     }
     if(tempCD.containsKey("_definitePosition")) { //definite position
@@ -248,7 +246,8 @@ class Obstacle {
     }
     if(tempCD.containsKey("_localRotation")) { //local rotation
       JSONArray lr = (JSONArray)tempCD.get("_localRotation");
-      localRotation = new PVector(dapf(lr.get(0))+lp_localRotation[0], dapf(lr.get(1))+lp_localRotation[1], -dapf(lr.get(2))+lp_localRotation[2]);
+      lr = addArrays(lr, createJSONArray(lp_localRotation[0], lp_localRotation[1], -lp_localRotation[2]));
+      localRotation = new PVector(dapf(lr.get(0)), dapf(lr.get(1)), -dapf(lr.get(2)));
     }
     if(tempCD.containsKey("_dissolve")) {
       dissolve = dapf(((JSONArray)tempCD.get("_dissolve")).get(0));
@@ -260,7 +259,7 @@ class Obstacle {
     }
     if(dissolve < 0) dissolve = -dissolve*2;
     if(dissolve > 0.01) {
-      renderQueue.add(new RenderObstacle(position, rotation, localRotation, scale, dissolve*0.5, colr, custom));
+      addRenderElement(new RenderObstacle(position, rotation, localRotation, scale, dissolve*0.5, colr, custom));
     }
   }
   JSONObject toJSON() {
