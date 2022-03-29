@@ -10,6 +10,11 @@ public class InfoWindow extends PApplet {
   public PFont textFont;
   public PFont codeFont;
   public int state = 0;
+  public int keyCode_;
+  public char key_;
+  boolean runkeyPress = false;
+  boolean rankeyTyped = false;
+  
   
   public void settings() {
     size(800, 800, FX2D); //renderer is FX2D to avoid a crash when resizing window
@@ -169,6 +174,10 @@ public class InfoWindow extends PApplet {
     } catch(AssertionError e) {
       println("Assertion Error");
     }
+    if(runkeyPress) {
+      keyPress();
+      runkeyPress = false;
+    }
   }
   public void mousePressed() {
     float scaling = 0.5;
@@ -205,13 +214,21 @@ public class InfoWindow extends PApplet {
       if(elements.get(i).mousePressed(mouseX, mouseY)) return;
     }
   }
-  void keyPressed() {
-    println(key, keyCode);
-    if(keyCode == SHIFT) shftPressed = true;
+  void keyPress() {
+    if(keyCode_ == SHIFT) shftPressed = true;
     for(int i = 0; i < elements.size(); i++) {
       UIElement uie = elements.get(i);
-      uie.keyPressed(key, keyCode);
+      uie.keyPressed(rankeyTyped ? key_ : 0, keyCode_);
     }
+    rankeyTyped = false;
+  }
+  void keyTyped() {
+    key_ = key;
+    rankeyTyped = true;
+  }
+  void keyPressed() {
+    keyCode_ = keyCode;
+    runkeyPress = true;
   }
   public void keyReleased() {
     if(keyCode == SHIFT) shftPressed = false;
