@@ -38,7 +38,11 @@ class Obstacle {
     HashSet<String> sharedProperties = new HashSet<String>();
     try {
     if(customData.containsKey("_track")) {
-      trackCD = tracks.get((String)customData.get("_track")).properties;
+      Object o = customData.get("_track");
+      Track t;
+      if(o instanceof String) t = tracks.get((String)customData.get("_track"));
+      else t = tracks.get(((JSONArray)customData.get("_track")).get(0));
+      trackCD = t.properties;
       Set<String> keys = trackCD.keySet();
       for(String i : keys) {
         tempCD.put(i, (JSONArray)trackCD.get(i));
@@ -46,7 +50,7 @@ class Obstacle {
       }
     }
     } catch(Exception e) {
-      println(tracks.get((String)customData.get("_track")));
+      println(customData.get("_track"));
       throw e;
     }
     float njs = noteJumpSpeed;
@@ -95,7 +99,10 @@ class Obstacle {
     JSONObject animations = new JSONObject();
     if(customData.containsKey("_animation")) animations = (JSONObject)customData.get("_animation");
     if(customData.containsKey("_track")){
-      Track track = tracks.get((String)customData.get("_track"));
+      Track track;
+      Object o = customData.get("_track");
+      if(o instanceof String) track = tracks.get((String)customData.get("_track"));
+      else track = tracks.get(((JSONArray)customData.get("_track")).get(0));
       if(!track.updatedThisFrame) track.update();
       JSONObject temp = track.getMostRecentPathAnimation(cursor);
       Set<String> keys = temp.keySet();

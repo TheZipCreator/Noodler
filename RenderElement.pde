@@ -78,8 +78,8 @@ class RenderArrow extends RenderElement {
       pushMatrix();
       translate(0, 0, -0.01);
       fill(red(colr), green(colr), blue(colr), ease(opacity, "easeInQuint")*255);
-      float colSize = noteSize*scale.x*0.04;
-      float colSize2 = noteSize*scale.x*0.08; //make sure the multiplier here is always 2x the multiplier in colSize
+      float colSize = noteSize*scale.x*0.03;
+      float colSize2 = noteSize*scale.x*0.06; //make sure the multiplier here is always 2x the multiplier in colSize
       beginShape();
       vertex(-colSize2, (noteSize*scale.y*0.7)+colSize);
       vertex((noteSize*scale.x*0.7)+colSize2, (noteSize*scale.y*0.7)+colSize);

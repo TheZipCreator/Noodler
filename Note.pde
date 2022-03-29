@@ -65,7 +65,11 @@ class Note {
     HashSet<String> sharedProperties = new HashSet<String>();
     try {
     if(customData.containsKey("_track")) {
-      trackCD = tracks.get((String)customData.get("_track")).properties;
+      Object o = customData.get("_track");
+      Track t;
+      if(o instanceof String) t = tracks.get((String)customData.get("_track"));
+      else t = tracks.get(((JSONArray)customData.get("_track")).get(0));
+      trackCD = t.properties;
       Set<String> keys = trackCD.keySet();
       for(String i : keys) {
         tempCD.put(i, (JSONArray)trackCD.get(i));
@@ -231,7 +235,6 @@ class Note {
     if(tempCD.containsKey("_position")) { //position
       JSONArray pos = (JSONArray)tempCD.get("_position");
       if(pos.size() < 3) {
-        println(pos, lp_position.length);
         position = BeatwallsToPosition(new PVector(dapf(pos.get(0))+lp_position[0], dapf(pos.get(1))+lp_position[1], tempTime), njs);
         _position.x = dapf(pos.get(0));
         _position.y = dapf(pos.get(1));
@@ -452,10 +455,10 @@ class Note {
         infoWindow.rotate(radians(localRotation.z));
         infoWindow.translate(-(noteSize*scale.x)/2, -(noteSize*scale.y)/2);
         if(type != 3) {
+          infoWindow.rect(0, 0, noteSize*scale.x, noteSize*scale.y);
           if(cutDirection == 8) {
-            ellipse(noteSize*scale.x*0.2, noteSize*scale.x*0.2, noteSize*scale.x*0.4, noteSize*scale.y*0.4);
+            infoWindow.ellipse(noteSize*scale.x*0.2, noteSize*scale.x*0.2, noteSize*scale.x*0.4, noteSize*scale.y*0.4);
           } else {
-            infoWindow.rect(0, 0, noteSize*scale.x, noteSize*scale.y);
             infoWindow.fill(red(arrowColor), green(arrowColor), blue(arrowColor), dissolveArrow*255);
             infoWindow.translate(noteSize*scale.x*0.05, noteSize*scale.y*0.05);
             infoWindow.beginShape();
@@ -478,8 +481,8 @@ class Note {
       return null;
     } catch(Exception e) {
       println(storedData);
-      throw e;
-      
+      //throw e;
+      return null;
     }
   }
   JSONObject toJSON() {

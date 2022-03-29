@@ -56,7 +56,7 @@ class TextBox extends UIElement {
     app.noStroke();
     app.fill(0);
     app.textSize(textSize);
-    app.text(tempValue, x, y+textSize);
+    app.text(tempValue, x, y+textSize-2);
     app.textSize(textSize*0.75);
     app.fill(255);
     app.text(label, x, y);
@@ -204,6 +204,7 @@ class CodeArea extends UIElement {
   ArrayList<String> value;
   ArrayList<String> tempValue;
   boolean beingEdited;
+  boolean finishedEditing;
   int cursorX;
   int cursorY;
   int cursorTimer = 0;
@@ -214,6 +215,7 @@ class CodeArea extends UIElement {
     tempValue = new ArrayList<String>(value);
     cursorX = 1;
     cursorY = 1;
+    finishedEditing = false;
   }
   @Override
   void render(PApplet app) {
@@ -239,8 +241,6 @@ class CodeArea extends UIElement {
   }
   void keyPressed(char key, int keyCode) {
     cursorTimer = 0;
-    if(shftPressed) key = Character.toUpperCase(key);
-    else key = Character.toLowerCase(key);
     if(isPrintableChar(key)) {
       tempValue.set(cursorY, insertChar(key, tempValue.get(cursorY), cursorX));
       cursorX++;
@@ -293,7 +293,7 @@ class CodeArea extends UIElement {
       }
       if(keyCode == TAB) {
         keyPressed(' ', ' ');
-        keyPressed(' ', ' ');
+        keyPressed(' ', ' '); 
       }
       if(keyCode == BACKSPACE) {
         if(cursorX > 0) {
@@ -334,6 +334,7 @@ class CodeArea extends UIElement {
   void stopEditing() {
     value = new ArrayList<String>(tempValue);
     beingEdited = false;
+    finishedEditing = true;
   }
   String getValue() {
     String out = "";
@@ -341,6 +342,43 @@ class CodeArea extends UIElement {
       out += value.get(i)+"\n";
     }
     return out;
+  }
+  void setValue(ArrayList<String> val) {
+    value = new ArrayList<String>(val);
+    tempValue = new ArrayList<String>(val);
+  }
+}
+
+class Button extends UIElement {
+  String label;
+  float textSize;
+  boolean clicked = false;
+  
+  Button(int x, int y, int xSize, int ySize, String id, String label) {
+    super(x, y, xSize, ySize, id);
+    this.textSize = ySize;
+    this.label = label;
+  }
+  @Override
+  void render(PApplet app) {
+    if(clicked) app.fill(128);
+    else app.fill(0);
+    app.stroke(255);
+    app.strokeWeight(2);
+    app.rect(x, y, xSize, ySize);
+    app.textSize(textSize);
+    app.textAlign(CENTER);
+    app.fill(255);
+    app.text(label, x+(xSize/2), y+textSize-2);
+    app.textAlign(LEFT);
+  }
+  @Override
+  boolean mousePressed(int mouseX, int mouseY) {
+    if(mouseX > x && mouseX < x+xSize && mouseY > y && mouseY < y+ySize) {
+      clicked = true;
+      return true;
+    }
+    return false;
   }
 }
 

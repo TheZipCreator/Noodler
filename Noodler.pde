@@ -1,4 +1,4 @@
-import beads.*; //<>// //<>//
+import beads.*; //<>// //<>// //<>// //<>//
 //import org.jaudiolibs.beads.*;
 
 import peasy.*;
@@ -1034,4 +1034,48 @@ JSONArray createJSONArray(Object... vals) {
 }
 void addRenderElement(RenderElement e) {
   if(renderQueue.size() < MAX_RENDER_ELEMENTS) renderQueue.add(e);
+}
+
+ArrayList<String> formatJSON(String json) {
+  ArrayList<String> out = new ArrayList<String>();
+  String curr = "";
+  int indentation = 0;
+  for(int i = 0; i < json.length(); i++) {
+    char c = json.charAt(i);
+    switch(c) {
+      case '{':
+      case '[':
+      out.add(multiplyString("  ", indentation)+curr);
+      out.add(multiplyString("  ", indentation)+c);
+      curr = "";
+      indentation++;
+      break;
+      case '}':
+      case ']':
+      out.add(multiplyString("  ", indentation)+curr);
+      indentation--;
+      out.add(multiplyString("  ", indentation)+c);
+      curr = "";
+      break;
+      case ',':
+      curr += ",";
+      if(!curr.equals("")) out.add(multiplyString("  ", indentation)+curr);
+      else out.set(out.size()-1, out.get(out.size()-1)+c);
+      curr = "";
+      break;
+      default:
+      curr += c;
+      break;
+    }
+  }
+  if(!curr.equals("")) out.add(curr);
+  return out;
+}
+
+String multiplyString(String a, int amount) {
+  String out = "";
+  for(int i = 0; i < amount; i++) {
+    out += a;
+  }
+  return out;
 }
