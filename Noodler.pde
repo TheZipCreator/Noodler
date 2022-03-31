@@ -253,7 +253,7 @@ void draw() {
         rotation.add(0);
         rotation.add(0);
       }
-      translate(-(dapf(position.get(0)))*noteSize, -dapf(position.get(1))*noteSize, dapf(position.get(2))*noteSize);
+      translate(-(dapf(position.get(0)))*noteSize, dapf(position.get(1))*noteSize, dapf(position.get(2))*noteSize);
       rotateX(-radians(dapf(rotation.get(0))));
       rotateY(-radians(dapf(rotation.get(1))));
       rotateZ(-radians(dapf(rotation.get(2))));
@@ -541,7 +541,6 @@ void loadSong(String path, String characteristic, String difficulty) {
   JSONObject jo = new JSONObject();
   try {
     jo = (JSONObject)p.parse(new FileReader(songPath+"/Info.dat")); //load map
-    mapjo = (JSONObject)p.parse(new FileReader(songPath+"/Info.dat"));
   } catch(Exception e) {
     e.printStackTrace();
   }
@@ -582,14 +581,7 @@ void loadSong(String path, String characteristic, String difficulty) {
   loop();
 }
 void saveSong() {
-  if(mapjo.containsKey("_customData")) {
-    JSONObject _editors = new JSONObject();
-    _editors.put("_lastEditedBy", "Noodler");
-    JSONObject noodler = new JSONObject();
-    noodler.put("version", versionText);
-    _editors.put("Noodler", noodler);
-    ((JSONObject)mapjo.get("_customData")).put("_editors", _editors);
-  }
+  if(!mapjo.containsKey("_customData")) mapjo.put("_customData", new JSONObject()); //add _customData if it doesn't already exist
   JSONArray _notes = new JSONArray();
   for(int i = 0; i < notes.size(); i++) {
     _notes.add(notes.get(i).toJSON());
@@ -606,16 +598,18 @@ void saveSong() {
   for(int i = 0; i < customEvents.size(); i++) {
     _customEvents.add(customEvents.get(i).toJSON());
   }
+  JSONArray _pointDefinitions = new JSONArray();
+  for(String i: pointDefinitions.keySet()) {
+    JSONObject pd = new JSONObject();
+    pd.put("_name", i);
+    pd.put("_points", pointDefinitions.get(i));
+    _pointDefinitions.add(pd);
+  }
   mapjo.put("_notes", _notes);
   mapjo.put("_obstacles", _obstacles);
   mapjo.put("_events", _events);
-  if(mapjo.containsKey("_customData")) {
-    ((JSONObject)mapjo.get("_customData")).put("_customEvents", _customEvents);
-  } else {
-    JSONObject temp = new JSONObject();
-    temp.put("_customEvents", _customEvents);
-    mapjo.put("_customData", temp);
-  }
+  ((JSONObject)mapjo.get("_customData")).put("_customEvents", _customEvents);
+  ((JSONObject)mapjo.get("_customData")).put("_pointDefinitions", _pointDefinitions);
   FileChooser chooser = new FileChooser();
   File directory = new File(sketchPath());
   chooser.setTitle("Choose an output file");
@@ -625,6 +619,7 @@ void saveSong() {
   File f = chooser.showSaveDialog(null);
   String[] toSave = {mapjo.toString()};
   saveStrings(f.getAbsolutePath(), toSave);
+  println("Saving complete!");
 }
 void loadMap(String path) {
   noLoop();
@@ -637,6 +632,7 @@ void loadMap(String path) {
   JSONObject jo = new JSONObject();
   try {
     jo = (JSONObject)p.parse(new FileReader(path)); //load map
+    mapjo = (JSONObject)p.parse(new FileReader(path));
   } catch(Exception e) {
     println(e.getMessage());
   }

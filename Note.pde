@@ -240,7 +240,7 @@ class Note {
         _position.y = dapf(pos.get(1));
       } else {
         position = BeatwallsToPosition(new PVector(dapf(pos.get(0))+lp_position[0], dapf(pos.get(1))+lp_position[1], tempTime), njs);
-        position.z += noteSize*dapf(pos.get(1));
+        position.z += noteSize*dapf(pos.get(2));
         _position.x = dapf(pos.get(0));
         _position.y = dapf(pos.get(1));
         _position.z = dapf(pos.get(2));

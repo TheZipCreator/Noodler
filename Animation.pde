@@ -24,28 +24,27 @@ class Animation {
       }
     }
     this.property = property;
+    //if(property.equals("_rotation") || property.equals("_localRotation")) {
+    //  //fix rotation
+    //  int[] currRot = {360, 360, 360};
+    //  for(int i = 1; i < this.keyframes.length-1; i++) {
+    //    JSONArray a = this.keyframes[i];
+    //    JSONArray b = this.keyframes[i+1];
+    //    for(int j = 0; j < proplength; j++) {
+    //      float av = dapf(a.get(j));
+    //      float bv = dapf(b.get(j));
+    //      float nbv = bv+currRot[j];
+    //      if(nbv > currRot[j]+360) {
+    //        currRot[j] = currRot[j]+360;
+    //        nbv = bv+currRot[j];
+    //      }
+    //      if(bv < av && abs(av-bv) >= 180) this.keyframes[i].set(j, bv);
+    //    }
+    //  }
+    //}
     } catch(Exception e) {
       println(keyframes, property);
       dead = true;
-    }
-    if(property.equals("_rotation") || property.equals("_localRotation")) {
-      //fix rotation
-      int proplength = proplen.get(property);
-      int[] currRot = {360, 360, 360};
-      for(int i = 1; i < this.keyframes.length-1; i++) {
-        JSONArray a = this.keyframes[i];
-        JSONArray b = this.keyframes[i+1];
-        for(int j = 0; j < proplength; j++) {
-          float av = dapf(a.get(j));
-          float bv = dapf(b.get(j));
-          float nbv = bv+currRot[j];
-          if(nbv > currRot[j]+360) {
-            currRot[j] = currRot[j]+360;
-            nbv = bv+currRot[j];
-          }
-          if(bv < av && abs(av-bv) >= 180) this.keyframes[i].set(j, bv);
-        }
-      }
     }
   }
   
