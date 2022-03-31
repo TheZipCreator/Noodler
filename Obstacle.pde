@@ -286,4 +286,8 @@ class Obstacle {
     if(obj.containsKey("_duration")) duration = dapf(obj.get("_duration"));
     if(obj.containsKey("_customData")) customData = (JSONObject)obj.get("_customData");
   }
+  
+  Obstacle copy() {
+    return new Obstacle(time, x, width, duration, type).addCustomData(copyJSONObject(customData));
+  }
 }

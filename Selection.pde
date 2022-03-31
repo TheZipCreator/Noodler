@@ -68,4 +68,13 @@ class Selection {
   boolean containsEvent(Event e) {
     return events.contains(e);
   }
+  
+  Selection copy() {
+    Selection s = new Selection();
+    s.selectedNotes = new ArrayList<Note>(selectedNotes);
+    s.selectedObstacles = new ArrayList<Obstacle>(selectedObstacles);
+    s.selectedCustomEvents = new ArrayList<CustomEvent>(selectedCustomEvents);
+    s.selectedEvents = new ArrayList<Event>(selectedEvents);
+    return s;
+  }
 }

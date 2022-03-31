@@ -39,4 +39,8 @@ class CustomEvent implements Comparable {
     if(obj.containsKey("_type")) type = (String)obj.get("_type");
     if(obj.containsKey("_data")) data = (JSONObject)obj.get("_data");
   }
+  
+  CustomEvent copy() {
+    return new CustomEvent(time, type, copyJSONObject(data));
+  }
 }

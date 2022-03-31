@@ -9,12 +9,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.*;
 //import org.tritonus.share.*;
 import java.io.FileReader;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.Collections;
-import java.util.HashSet;
+import java.util.*;
 import java.awt.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.DirectoryChooser;
@@ -81,7 +76,7 @@ int propertyImageSize = 32; //size that custom events display at
 HashMap<String, PImage> propertyImages;
 HashMap<String, String> simplePropertyNames;
 boolean displayTracks = false; //toggles a thing where notes display their track ontop of them
-ArrayList<RenderElement> renderQueue;
+Stack<RenderElement> renderQueue;
 HashMap<String, PImage> UIElementImages;
 String versionText = "ALPHA BUILD 1";
 JSONObject mapjo;
@@ -195,6 +190,7 @@ void setup() {
   println("Obstacles: "+obstacles.size());
   codeFont = createFont(sketchPath()+codeFontPath, 16);
   textFont = createFont(sketchPath()+textFontPath, 64);
+  renderQueue = new Stack<RenderElement>();
   infoWindow = new InfoWindow();
   String[] args = {"test"};
   PApplet.runSketch(args, infoWindow);
@@ -406,7 +402,7 @@ void draw() {
     fill(255);
     float renderLimit = jumpDistance/4;
     //clear the render queue
-    renderQueue = new ArrayList<RenderElement>();
+    //renderQueue = new ArrayList<RenderElement>();
     //add objects to the render queue
     for(int i = 0; i < obstacles.size(); i++) {
       obstacles.get(i).render();
@@ -417,11 +413,9 @@ void draw() {
     }
     //sort the render queue by opacity
     Collections.sort(renderQueue);
-    Collections.reverse(renderQueue);
+    //Collections.reverse(renderQueue);
     //actually render the objects
-    for(int i = 0; i < renderQueue.size(); i++) {
-      renderQueue.get(i).render();
-    }
+    while(renderQueue.size() > 0) renderQueue.pop().render();
     if(frameCount > 20) iw_canrender = true;
     if(playing) {
       cursor = cursorStartedPlaying+((Math.round(player.getPosition())-timeStartedPlaying)*(((bpm/60f))*0.001));

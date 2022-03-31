@@ -503,4 +503,9 @@ class Note {
     if(obj.containsKey("_cutDirection")) cutDirection = dapi(obj.get("_cutDirection"));
     if(obj.containsKey("_customData")) customData = (JSONObject)obj.get("_customData");
   }
+  Note copy() {
+    Note n = new Note(time, x, y, type, cutDirection).addCustomData(copyJSONObject(customData));
+    n.storedData = new HashMap<String, Object>(storedData);
+    return n;
+  }
 }

@@ -76,4 +76,8 @@ class Event { //lighting events. CustomEvents are their own thing
     if(obj.containsKey("_value")) value = dapi(obj.get("_value"));
     if(obj.containsKey("_customData")) customData = (JSONObject)obj.get("_customData");
   }
+  
+  Event copy() {
+    return new Event(time, type, value).addCustomData(copyJSONObject(customData));
+  }
 }
