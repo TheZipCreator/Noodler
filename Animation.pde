@@ -66,6 +66,7 @@ class Animation {
     //println(pos, firstFrame, secondFrame, times.length, keyframes.length);
     float progress = map(pos, times[firstFrame], times[secondFrame]+0.001, 0, 1);
     if(keyframes[secondFrame].size() > proplength+1) { //if there's an easing
+      if(keyframes[secondFrame].get(proplength+1) instanceof String)
       progress = ease(progress, (String)keyframes[secondFrame].get(proplength+1)); //apply the easing
     }
     //calculate the values

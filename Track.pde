@@ -37,7 +37,8 @@ class Track {
           if(!j.equals("_track") && !j.equals("_duration") && !j.equals("_easing")) {
             Animation a;
             if(data.get(j) instanceof JSONArray) a = new Animation((JSONArray)data.get(j), j);
-            else a = new Animation(pointDefinitions.get(((String)data.get(j))), j);
+            else if(data.get(j) instanceof String) a = new Animation(pointDefinitions.get(((String)data.get(j))), j);
+            else a = new Animation(createJSONArray(0, 0, 0, 0, 0, 0), j);
             float animPosition = (cursor-time)/duration;
             if(animPosition > 1) animPosition = 1;
             properties.put(j, a.getPropertyAtPosition(animPosition));
