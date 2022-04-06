@@ -1023,7 +1023,7 @@ JSONArray createJSONArray(Object... vals) {
   return out;
 }
 void addRenderElement(RenderElement e) {
-  if(renderQueue.size() < MAX_RENDER_ELEMENTS) renderQueue.add(e);
+  if(renderQueue.size() < MAX_RENDER_ELEMENTS) renderQueue.push(e);
 }
 
 ArrayList<String> formatJSON(String json) {
