@@ -8,7 +8,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.*;
 //import org.tritonus.share.*;
-import java.io.FileReader;
+import java.io.*;
 import java.util.*;
 import java.awt.Color;
 import javafx.stage.FileChooser;
@@ -32,7 +32,7 @@ boolean cameraActive = false;
 int state = 0; 
 JSONObject map;
 //String songPath = "D:\\things\\bsmaps\\Beat Saber_Data\\CustomWIPLevels\\netest";
-String songPath = "D:/things/bsmaps/Beat Saber_Data/CustomWIPLevels/New Challenger Approaching";
+String songPath = "D:\\Processing\\Noodler\\data\\levels\\noodle\\analys";
 String difficulty = "ExpertPlus";
 String characteristic = "Standard";
 String loadedSong = songPath;
@@ -529,8 +529,6 @@ void loadSong(String path, String characteristic, String difficulty) {
   leftColor = color(217, 22, 22);
   rightColor = color(50, 172, 255);
   obstacleColor = leftColor;
-  String audioPath = songPath+"\\song.mp3";
-  player.setSample(SampleManager.sample(audioPath));
   songPath = path;
   JSONObject jo = new JSONObject();
   try {
@@ -569,6 +567,12 @@ void loadSong(String path, String characteristic, String difficulty) {
         }
       }
     }
+    File f = new File(sketchPath+"/data/ogg2mp3/out.mp3");
+    f.delete();
+    python(sketchPath+"/data/ogg2mp3/ogg2mp3.py \""+songPath+"/"+jo.get("_songFilename")+"\" \""+sketchPath+"/data/ogg2mp3/out.mp3\"");
+    String audioPath = sketchPath+"/data/ogg2mp3/out.mp3";
+    SampleManager.removeSample(audioPath);
+    player.setSample(SampleManager.sample(audioPath));
   } catch(Exception e) {
     throw e;
   }
@@ -1078,4 +1082,20 @@ String multiplyString(String a, int amount) {
     out += a;
   }
   return out;
+}
+
+void python(String dir) {
+  try {
+    println("Executing python script...");
+    Process p = Runtime.getRuntime().exec("python "+dir);
+    println("python "+dir);
+    p.waitFor(); //wait until python script is finished
+    BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+    String ret = in.readLine();
+    println("value is : "+ret);
+    println("Python script finished execution.");
+  } catch(Exception e) {
+    println("Python script failed:");
+    e.printStackTrace();
+  }
 }
