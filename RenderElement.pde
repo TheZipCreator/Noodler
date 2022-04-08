@@ -115,14 +115,15 @@ class RenderObstacle extends RenderElement {
     rotateY(radians(rotation.y));
     rotateZ(-radians(rotation.z));
     translate(0, -noteSize*2, 0);
-    translate(position.x+(scale.x/2)-(noteSize/2), position.y+(scale.y/2)-(noteSize), position.z-(scale.z/2)); 
+    translate(0, -scale.y, 0);
+    translate(position.x+(scale.x*0.5)-(noteSize/2), position.y, position.z-(scale.z/2)); 
     //+(scale.x/2) is there to make it so the left face of the wall always aligns in the same spot, and -(noteSize/2) is there in order to correct the left face. +(scale.y/2) is similar. 
     //-(scale.z/2) is to make the z position of the wall correct, since duration usually changes it.
-    translate(0, scale.y, -scale.z/2);
+    translate(0, scale.y/2, scale.z/2);
     rotateX(radians(localRotation.x));
-    rotateY(-radians(localRotation.y));
-    rotateZ(-radians(localRotation.z));
-    translate(0, -scale.y, scale.z/2);
+    rotateY(radians(localRotation.y));
+    rotateZ(radians(localRotation.z));
+    translate(0, -scale.y/2, -scale.z/2);
     box(scale.x, scale.y, scale.z);
     popMatrix();
   }

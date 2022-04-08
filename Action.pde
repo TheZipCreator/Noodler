@@ -149,3 +149,127 @@ class ChangeCustomEventsAction extends Action {
     }
   }
 }
+
+class AddNotesAction extends Action {
+  Note[] obj;
+  
+  AddNotesAction(Note[] obj) {
+    super();
+    this.obj = obj;
+  }
+  
+  AddNotesAction(ArrayList<Note> obj) {
+    super();
+    this.obj = new Note[obj.size()];
+    for(int i = 0; i < obj.size(); i++) {
+      this.obj[i] = obj.get(i);
+    }
+  }
+  
+  @Override
+  void commit() {
+    for(int i = 0; i < obj.length; i++) {
+      notes.add(obj[i]);
+    }
+  }
+  
+  @Override
+  void undo() {
+    for(int i = 0; i < obj.length; i++) {
+      notes.remove(obj[i]);
+    }
+  }
+}
+
+class AddObstaclesAction extends Action {
+  Obstacle[] obj;
+  
+  AddObstaclesAction(Obstacle[] obj) {
+    super();
+    this.obj = obj;
+  }
+  
+  AddObstaclesAction(ArrayList<Obstacle> obj) {
+    super();
+    this.obj = new Obstacle[obj.size()];
+    for(int i = 0; i < obj.size(); i++) {
+      this.obj[i] = obj.get(i);
+    }
+  }
+  
+  @Override
+  void commit() {
+    for(int i = 0; i < obj.length; i++) {
+      obstacles.add(obj[i]);
+    }
+  }
+  
+  @Override
+  void undo() {
+    for(int i = 0; i < obj.length; i++) {
+      obstacles.remove(obj[i]);
+    }
+  }
+}
+
+class AddEventsAction extends Action {
+  Event[] obj;
+  
+  AddEventsAction(Event[] obj) {
+    super();
+    this.obj = obj;
+  }
+  
+  AddEventsAction(ArrayList<Event> obj) {
+    super();
+    this.obj = new Event[obj.size()];
+    for(int i = 0; i < obj.size(); i++) {
+      this.obj[i] = obj.get(i);
+    }
+  }
+  
+  @Override
+  void commit() {
+    for(int i = 0; i < obj.length; i++) {
+      events.add(obj[i]);
+    }
+  }
+  
+  @Override
+  void undo() {
+    for(int i = 0; i < obj.length; i++) {
+      events.remove(obj[i]);
+    }
+  }
+}
+
+class AddCustomEventsAction extends Action {
+  CustomEvent[] obj;
+  
+  AddCustomEventsAction(CustomEvent[] obj) {
+    super();
+    this.obj = obj;
+  }
+  
+  AddCustomEventsAction(ArrayList<CustomEvent> obj) {
+    super();
+    this.obj = new CustomEvent[obj.size()];
+    for(int i = 0; i < obj.size(); i++) {
+      this.obj[i] = obj.get(i);
+    }
+  }
+  
+  @Override
+  void commit() {
+    for(int i = 0; i < obj.length; i++) {
+      customEvents.add(obj[i]);
+    }
+  }
+  
+  @Override
+  void undo() {
+    for(int i = 0; i < obj.length; i++) {
+      customEvents.remove(obj[i]);
+    }
+  }
+}

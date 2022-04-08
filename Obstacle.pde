@@ -80,7 +80,7 @@ class Obstacle {
     if(!changed) if(!decideToRender_t(time-cursor+duration, time-cursor, jumpDistance)) return;
     else if(!decideToRender_t(time-cursor+duration, time-cursor, getJumpDistance(njs, sbo))) return;
     fill(red(obstacleColor), green(obstacleColor), blue(obstacleColor), 128);
-    PVector position = BeatwallsToPosition(new PVector(x-2, 3.5, time), njs); //x-2 because beatwalls position is 2 offset from x, and 3 because that's the top row
+    PVector position = BeatwallsToPosition(new PVector(x-2, 0, time), njs); //x-2 because beatwalls position is 2 offset from x, and 3 because that's the top row
     float height = type == 0 ? 3.5 : 1.5;
     PVector scale = new PVector(this.width*noteSize, height*noteSize, duration*editorScale*noteSize);
     PVector rotation = new PVector(0, 0, 0);
@@ -171,7 +171,7 @@ class Obstacle {
       if(!tempCD.containsKey(i)) tempCD.put(i, (JSONArray)trackCD.get(i));
     }
     float[] lp_position = new float[2];
-    lp_position[0] = x-2;
+    lp_position[0] = 0;
     lp_position[1] = 0;
     if(customData.containsKey("_position") && sharedProperties.contains("_position")) {
       JSONArray pos = (JSONArray)customData.get("_position");

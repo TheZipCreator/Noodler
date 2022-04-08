@@ -25,14 +25,14 @@ SamplePlayer player;
 SamplePlayer hitsound;
 //AudioDecoder ad;
 
-final int MAX_RENDER_ELEMENTS = 2000;
+final int MAX_RENDER_ELEMENTS = 5000;
 
 boolean shftPressed = false;
 boolean cameraActive = false;
 int state = 0; 
 JSONObject map;
-//String songPath = "D:\\things\\bsmaps\\Beat Saber_Data\\CustomWIPLevels\\netest";
-String songPath = "D:\\Processing\\Noodler\\data\\levels\\noodle\\analys";
+String songPath = "D:\\things\\bsmaps\\Beat Saber_Data\\CustomWIPLevels\\netest";
+//String songPath = "D:\\Processing\\Noodler\\data\\levels\\noodle\\analys";
 String difficulty = "ExpertPlus";
 String characteristic = "Standard";
 String loadedSong = songPath;
