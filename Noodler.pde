@@ -195,6 +195,7 @@ void setup() {
   String[] args = {"test"};
   PApplet.runSketch(args, infoWindow);
   infoWindow.propertyImages = propertyImages;
+  println(System.getProperty("java.version"));
 }
 void draw() {
   try {
@@ -232,6 +233,7 @@ void draw() {
   int playerTrackIndex = getLastCustomEvent("AssignPlayerToTrack");
     if(playerTrackIndex != -1) {
       Track playerTrack = tracks.get((String)(customEvents.get(playerTrackIndex).data.get("_track")));
+      if(!playerTrack.updatedThisFrame) playerTrack.update();
       JSONObject properties = playerTrack.properties;
       JSONArray position = new JSONArray();
       JSONArray rotation = new JSONArray();
@@ -243,16 +245,23 @@ void draw() {
         position.add(0);
       }
       if(properties.containsKey("_rotation")) {
-        rotation = (JSONArray)properties.get("_rotation");
+        Object o = properties.get("_rotation");
+        if(isNumber(o)) {
+          rotation.add(0);
+          rotation.add(0);
+          rotation.add(dapf(o));
+        } else rotation = (JSONArray)properties.get("_rotation");
       } else {
         rotation.add(0);
         rotation.add(0);
         rotation.add(0);
       }
       translate(-(dapf(position.get(0)))*noteSize, dapf(position.get(1))*noteSize, dapf(position.get(2))*noteSize);
-      rotateX(-radians(dapf(rotation.get(0))));
-      rotateY(-radians(dapf(rotation.get(1))));
-      rotateZ(-radians(dapf(rotation.get(2))));
+      translate(0, noteSize*2, 0);
+      if(rotation.size() > 0) rotateX(radians(dapf(rotation.get(0))));
+      if(rotation.size() > 1) rotateY(radians(dapf(rotation.get(1))));
+      if(rotation.size() > 2) rotateZ(-radians(dapf(rotation.get(2))));
+      translate(0, -noteSize*2, 0);
     }
     }
   //lighting
