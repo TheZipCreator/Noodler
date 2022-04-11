@@ -14,6 +14,8 @@ public class InfoWindow extends PApplet {
   public char key_;
   boolean runkeyPress = false;
   boolean rankeyTyped = false;
+  ArrayList<String> console;
+  String currentString;
   
   
   public void settings() {
@@ -36,6 +38,9 @@ public class InfoWindow extends PApplet {
     initializeUI();
     codeFont = createFont(sketchPath+codeFontPath, 16);
     textFont = createFont(sketchPath+textFontPath, 64);
+    currentString = "";
+    console = new ArrayList<String>();
+    console.add("Test");
   }
   public void draw() {
     try {
@@ -164,6 +169,12 @@ public class InfoWindow extends PApplet {
               break;
             }
           }
+        } else if(state == 2) {
+          background(0);
+          textFont(codeFont);
+          textSize(16);
+          stroke(255);
+          line(0, height-16, width, height-16);
         }
         loadPixels();
         tempImage.pixels = pixels;
@@ -251,7 +262,18 @@ public class InfoWindow extends PApplet {
         if(event.type.equals("AssignPathAnimation") || event.type.equals("AnimateTrack")) {
           Set<String> temp = event.data.keySet();
           Set<String> properties = new HashSet<String>(temp);
-          String track = (String)event.data.get("_track");
+          Object track_obj = event.data.get("_track");
+          String[] track = new String[0];
+          if(track_obj instanceof String) {
+            track = new String[1];
+            track[0] = (String)event.data.get("_track");
+          } else if(track_obj instanceof JSONArray) {
+            JSONArray arr = (JSONArray)track_obj;
+            track = new String[arr.size()];
+            for(int j = 0; j < track.length; j++) {
+              track[j] = (String)arr.get(j);
+            }
+          }
           int tempy = 0;
           int x = at_x;
           if(event.type.equals("AssignPathAnimation")) x = apa_x;
@@ -261,8 +283,8 @@ public class InfoWindow extends PApplet {
           if(properties.contains("_duration")) properties.remove("_duration");
           if(properties.contains("_track")) properties.remove("_track");
           if(properties.contains("_easing")) properties.remove("_easing");
-          if(tracks.containsKey(track)) {
-            color c = tracks.get(track).col;
+          if(tracks.containsKey(track[0])) {
+            color c = tracks.get(track[0]).col;
             fill(red(c), green(c), blue(c));
             rect(x, y, propertyImageSize, propertyImageSize*properties.size());
           }

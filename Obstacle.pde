@@ -290,4 +290,13 @@ class Obstacle {
   Obstacle copy() {
     return new Obstacle(time, x, width, duration, type).addCustomData(copyJSONObject(customData));
   }
+  
+  void copyFrom(Obstacle o) {
+    time = o.time;
+    x = o.x;
+    type = o.type;
+    duration = o.duration;
+    this.width = o.width;
+    customData = copyJSONObject(o.customData);
+  }
 }

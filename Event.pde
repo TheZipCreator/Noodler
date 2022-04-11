@@ -80,4 +80,11 @@ class Event { //lighting events. CustomEvents are their own thing
   Event copy() {
     return new Event(time, type, value).addCustomData(copyJSONObject(customData));
   }
+  
+  void copyFrom(Event e) {
+    time = e.time;
+    type = e.type;
+    value = e.value;
+    customData = copyJSONObject(e.customData);
+  }
 }

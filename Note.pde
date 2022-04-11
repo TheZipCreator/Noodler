@@ -508,4 +508,13 @@ class Note {
     n.storedData = new HashMap<String, Object>(storedData);
     return n;
   }
+  
+  void copyFrom(Note n) {
+    time = n.time;
+    x = n.x;
+    y = n.y;
+    type = n.type;
+    cutDirection = n.cutDirection;
+    customData = copyJSONObject(n.customData);
+  }
 }

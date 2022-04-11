@@ -11,8 +11,17 @@ class CustomEvent implements Comparable {
   
   void findTracks() {
     if(data.containsKey("_track")) {
-      String t = (String)data.get("_track");
-      if(!tracks.containsKey(t)) tracks.put(t, new Track(t));
+      Object o = data.get("_track");
+      if(o instanceof String) {
+        String t = (String)data.get("_track");
+        if(!tracks.containsKey(t)) tracks.put(t, new Track(t));
+      } else if(o instanceof JSONArray) {
+        JSONArray arr = (JSONArray)data.get("_track");
+        for(int i = 0; i < arr.size(); i++) {
+          String t = (String)arr.get(i);
+          if(!tracks.containsKey(t)) tracks.put(t, new Track(t));
+        }
+      }
     }
   }
   
@@ -42,5 +51,11 @@ class CustomEvent implements Comparable {
   
   CustomEvent copy() {
     return new CustomEvent(time, type, copyJSONObject(data));
+  }
+  
+  void copyFrom(CustomEvent e) {
+    time = e.time;
+    type = e.type;
+    data = copyJSONObject(e.data);
   }
 }

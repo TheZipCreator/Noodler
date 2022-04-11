@@ -13,8 +13,14 @@ class Track {
     for(int i = 0; i < customEvents.size(); i++) {
       CustomEvent e = customEvents.get(i);
       //if(((String)e.type).equals("AnimateTrack")) {
-        if(((String)e.data.get("_track")).equals(name)) {
-          events.add(e);
+        Object o = e.data.get("_track");
+        if(o instanceof String) {
+          if(((String)e.data.get("_track")).equals(name)) {
+            events.add(e);
+          }
+        } else if(o instanceof JSONArray) {
+          JSONArray arr = (JSONArray)o;
+          if(arr.contains(name)) events.add(e);
         }
       //}
     }

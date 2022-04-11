@@ -195,7 +195,7 @@ void setup() {
   String[] args = {"test"};
   PApplet.runSketch(args, infoWindow);
   infoWindow.propertyImages = propertyImages;
-  println(System.getProperty("java.version"));
+  sphereDetail(4);
 }
 void draw() {
   try {
