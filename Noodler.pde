@@ -83,7 +83,7 @@ String versionText = "ALPHA BUILD 1";
 JSONObject mapjo;
 boolean saveSong = false;
 float lightingLerpAmount = 0.01;
-boolean enableAssignPlayerToTrack = false;
+boolean enableAssignPlayerToTrack = true;
 boolean renderMarkers = true;
 String sketchPath;
 String codeFontPath = "/data/font/SourceCodePro-Medium.ttf";
@@ -267,9 +267,9 @@ void draw() {
       }
       translate(-(dapf(position.get(0)))*noteSize, dapf(position.get(1))*noteSize, dapf(position.get(2))*noteSize);
       translate(0, noteSize*2, 0);
-      if(rotation.size() > 0) rotateX(radians(dapf(rotation.get(0))));
-      if(rotation.size() > 1) rotateY(radians(dapf(rotation.get(1))));
-      if(rotation.size() > 2) rotateZ(-radians(dapf(rotation.get(2))));
+      if(rotation.size() > 0) rotateX(-radians(dapf(rotation.get(0))));
+      if(rotation.size() > 1) rotateY(-radians(dapf(rotation.get(1))));
+      if(rotation.size() > 2) rotateZ(radians(dapf(rotation.get(2))));
       translate(0, -noteSize*2, 0);
     }
     }
