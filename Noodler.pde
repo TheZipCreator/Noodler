@@ -60,6 +60,7 @@ float jumpDistance;
 float cutoffPoint = 50; //how far notes should be rendered
 HashMap<String, Integer> proplen; //how many attributes are in certain properties
 color backgroundColor;
+color avgColor;
 float ringRotation = 0;
 float ringRotationToAdd = 0;
 int ringZoom = 0;
@@ -89,6 +90,7 @@ String codeFontPath = "/data/font/SourceCodePro-Medium.ttf";
 String textFontPath = "/data/font/Roboto-Medium.ttf";
 PFont codeFont;
 PFont textFont;
+boolean enableFancyLighting = false;
 
 void settings() {
   size(1200, 800, P3D);
@@ -199,6 +201,13 @@ void setup() {
 }
 void draw() {
   try {
+  if(enableFancyLighting) {
+    avgColor = lerpColor(avgColor, color(255, 255, 255), 0.3);
+    ambientLight(red(avgColor), green(avgColor), blue(avgColor));
+    directionalLight(red(avgColor), green(avgColor), blue(avgColor), 300, 300, -200);
+  } else {
+    lights();
+  }
   textFont(textFont);
   //camera shit (I have to do this every frame because peasycam)
   float fov = PI/3.0;
@@ -276,11 +285,19 @@ void draw() {
     float rightLaserSpeed = events.get(getLastEvent(13)).value*0.25;
     rightLaserRot = ((cursor*rightLaserSpeed)%360);
   }
+  float averageR = 0;
+  float averageG = 0;
+  float averageB = 0;
+  int amtColors = 0;
   //println("A", red(backgroundColor), green(backgroundColor), blue(backgroundColor));
   if(state == 0) {
     int backgroundLoc = -5000;
     if(getLastEvent(0) != -1) { 
       color c = events.get(getLastEvent(0)).getColor();
+      averageR += red(c);
+      averageG += green(c);
+      averageB += blue(c);
+      amtColors++;
       if(alpha(c) != 0) {
         backgroundColor = lerpColor(backgroundColor, c, lightingLerpAmount);
         stroke(red(c), green(c), blue(c), alpha(c));
@@ -294,6 +311,10 @@ void draw() {
     }
     if(getLastEvent(1) != -1) {
       color c = events.get(getLastEvent(1)).getColor();
+      averageR += red(c);
+      averageG += green(c);
+      averageB += blue(c);
+      amtColors++;
       if(alpha(c) != 0) {
         backgroundColor = lerpColor(backgroundColor, c, lightingLerpAmount);
         fill(red(c), green(c), blue(c), alpha(c));
@@ -325,6 +346,10 @@ void draw() {
     }
     if(getLastEvent(2) != -1) {
       color c = events.get(getLastEvent(2)).getColor();
+      averageR += red(c);
+      averageG += green(c);
+      averageB += blue(c);
+      amtColors++;
       if(alpha(c) != 0) {
         backgroundColor = lerpColor(backgroundColor, c, lightingLerpAmount);
         stroke(red(c), green(c), blue(c), alpha(c));
@@ -341,6 +366,10 @@ void draw() {
     }
     if(getLastEvent(3) != -1) {
       color c = events.get(getLastEvent(3)).getColor();
+      averageR += red(c);
+      averageG += green(c);
+      averageB += blue(c);
+      amtColors++;
       if(alpha(c) != 0) {
         backgroundColor = lerpColor(backgroundColor, c, lightingLerpAmount);
         stroke(red(c), green(c), blue(c), alpha(c));
@@ -357,6 +386,10 @@ void draw() {
     }
     if(getLastEvent(4) != -1) {
       color c = events.get(getLastEvent(4)).getColor();
+      averageR += red(c);
+      averageG += green(c);
+      averageB += blue(c);
+      amtColors++;
       if(alpha(c) != 0) {
         backgroundColor = lerpColor(backgroundColor, c, lightingLerpAmount);
         fill(red(c), green(c), blue(c), alpha(c));
@@ -387,6 +420,10 @@ void draw() {
       }
     }
     backgroundColor = lerpColor(backgroundColor, color(0), lightingLerpAmount*2.5);
+    averageR /= amtColors;
+    averageG /= amtColors;
+    averageB /= amtColors;
+    avgColor = color(averageR, averageG, averageB);
     //println("B", red(backgroundColor), green(backgroundColor), blue(backgroundColor));
     if(playing) {
       for(int i = 0; i < events.size(); i++) {
@@ -1107,4 +1144,14 @@ void python(String dir) {
     println("Python script failed:");
     e.printStackTrace();
   }
+}
+
+String stringArrayToString(String[] strings) {
+  String res = "";
+  for(int i = 0; i < strings.length; i++) {
+    res += strings[i];
+    if(i != strings.length-1) res += ", ";
+    else res += ',';
+  }
+  return res;
 }

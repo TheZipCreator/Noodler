@@ -129,6 +129,9 @@ public class InfoWindow extends PApplet {
                   initializeUI();
                 }
                 break;
+              case "global_enableFancyLighting":
+                enableFancyLighting = ((CheckBox)uie).checked;
+              break;
               default:
               break;
             }
@@ -290,7 +293,7 @@ public class InfoWindow extends PApplet {
           }
           for(String j: properties) {
             if(propertyImages.containsKey(j) && simplePropertyNames.containsKey(j)) {
-              elements.add(new UImage(x, tempy+y, "customEvent_"+track, propertyImages.get(j), simplePropertyNames.get(j)+" Animation on Track "+track));
+              elements.add(new UImage(x, tempy+y, "customEvent_"+track, propertyImages.get(j), simplePropertyNames.get(j)+" Animation on Track "+stringArrayToString(track)));
             } else {
               println(j);
             }
@@ -329,6 +332,7 @@ public class InfoWindow extends PApplet {
       elements.add(new CheckBox(300, 160, 25, 25, "global_alwaysOnTop", false, "Always On Top"));
       elements.add(new CheckBox(300, 190, 25, 25, "global_enableAssignPlayerToTrack", false, "Enable AssignPlayerToTrack Events"));
       elements.add(new CheckBox(300, 220, 25, 25, "global_renderMarkers", renderMarkers, "Render Markers"));
+      elements.add(new CheckBox(300, 250, 25, 25, "global_enableFancyLighting", enableFancyLighting, "Enable Fancy Lighting"));
       elements.add(new TextBox(300, 100, 200, 25, "global_difficulty", difficulty, "Difficulty"));
       elements.add(new TextBox(510, 100, 200, 25, "global_characteristic", characteristic, "Characteristic"));
       elements.add(new FileSelector(300, 0, "global_songPath", songPath, true, sketchPath+"/data/levels", "Pick Map"));
