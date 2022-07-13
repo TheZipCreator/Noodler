@@ -91,6 +91,9 @@ String textFontPath = "/data/font/Roboto-Medium.ttf";
 PFont codeFont;
 PFont textFont;
 boolean enableFancyLighting = false;
+boolean reloadMap = false;
+boolean resetCursor = true;
+boolean enableHitSounds = true;
 
 void settings() {
   size(1200, 800, P3D);
@@ -137,7 +140,7 @@ void setup() {
   simplePropertyNames.put("_startY","Fog Start Y");
   simplePropertyNames.put("_height","Fog Height");
   ac = new AudioContext();
-  surface.setResizable(true);
+  frame.setResizable(true);
   //surface.setLocation(225, 50);
   cam = new PeasyCam(this, 0, 0, 0, 500);
   cam.lookAt(0, 0, 0);
@@ -466,6 +469,9 @@ void draw() {
     if(playing) {
       cursor = cursorStartedPlaying+((Math.round(player.getPosition())-timeStartedPlaying)*(((bpm/60f))*0.001));
     }
+    for(int i = 0; i < notes.size(); i++) {
+      notes.get(i).updateClickSound();
+    }
     popMatrix();
     //update tracks (this is done last so that there's no flickering when the player is being animated)
     Set<String> tracksKeySet = tracks.keySet();
@@ -474,7 +480,8 @@ void draw() {
       tracks.get(i).updatedThisFrame = false;
     }
   }
-  if(!loadedSong.equals(songPath)) {
+  if(!loadedSong.equals(songPath) || reloadMap) {
+    reloadMap = false;
     loadedSong = songPath;
     loadSong(songPath, characteristic, difficulty);
   }
@@ -571,7 +578,8 @@ void mouseWheel(MouseEvent event) {
 }
 void loadSong(String path, String characteristic, String difficulty) {
   noLoop();
-  cursor = 0;
+  if(resetCursor) cursor = 0;
+  resetCursor = true;
   leftColor = color(217, 22, 22);
   rightColor = color(50, 172, 255);
   obstacleColor = leftColor;
@@ -1134,11 +1142,9 @@ void python(String dir) {
   try {
     println("Executing python script...");
     Process p = Runtime.getRuntime().exec("python "+dir);
-    println("python "+dir);
     p.waitFor(); //wait until python script is finished
     BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
     String ret = in.readLine();
-    println("value is : "+ret);
     println("Python script finished execution.");
   } catch(Exception e) {
     println("Python script failed:");

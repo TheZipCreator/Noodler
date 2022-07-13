@@ -282,30 +282,33 @@ class Note {
     if(tempCD.containsKey("_dissolveArrow")) {
       dissolveArrow = dapf(((JSONArray)tempCD.get("_dissolveArrow")).get(0));
     }
+    storedData.put("interactable", interactable);
     color colr;
     colr = color(0);
     switch(type) {
       case 0:
-        if(time > cursor || changedTime) colr = color(red(leftColor), green(leftColor), blue(leftColor), dissolve*255);
+        if(time > cursor || changedTime && interactable) colr = color(red(leftColor), green(leftColor), blue(leftColor), dissolve*255);
         else  colr = color(red(leftColor), green(leftColor), blue(leftColor), dissolve*64);
         break;
       case 1:
-        if(time > cursor || changedTime)  colr = color(red(rightColor), green(rightColor), blue(rightColor), dissolve*255);
+        if(time > cursor || changedTime && interactable)  colr = color(red(rightColor), green(rightColor), blue(rightColor), dissolve*255);
         else fill(red(rightColor),  colr = color(rightColor), blue(rightColor), dissolve*64);
         break;
       case 3:
-        if(time > cursor || changedTime)  colr = color(128, 128, 128, dissolve*255);
+        if(time > cursor || changedTime && interactable)  colr = color(128, 128, 128, dissolve*255);
         else  colr = color(128, 128, 128, dissolve*64);
         break;
       default:
-        if(time > cursor || changedTime)  colr = color(0, 0, 0, dissolve*255);
+        if(time > cursor || changedTime && interactable)  colr = color(0, 0, 0, dissolve*255);
         else  colr = color(0, 0, 0, dissolve*64);
         break;
     }
     if(tempCD.containsKey("_color")) { //chroma custom color
       JSONArray col = (JSONArray)tempCD.get("_color");
-      if(tempTime > cursor) colr = color(dapf(col.get(0))*255, dapf(col.get(1))*255, dapf(col.get(2))*255, dissolve*255);
-      else colr = color(dapf(col.get(0))*255, dapf(col.get(1))*255, dapf(col.get(2))*255, dissolve*64);
+      if(col.size() > 0) {
+        if(tempTime > cursor) colr = color(dapf(col.get(0))*255, dapf(col.get(1))*255, dapf(col.get(2))*255, dissolve*255);
+        else colr = color(dapf(col.get(0))*255, dapf(col.get(1))*255, dapf(col.get(2))*255, dissolve*64);
+      }
     }
     switch(cutDirection) {
       case 0:
@@ -396,10 +399,12 @@ class Note {
       //textMode(MODEL);
     fill(255);
     
-    //infoWindow.
+    //updateClickSound();
+  }
+  void updateClickSound() {
     //click sound stuff
-    if(playing && type != 3 && interactable) {
-      if(cursorStartedPlaying < time && cursor >= time && !playedClickSound) {
+    if(storedData.containsKey("interactable")) if(playing && type != 3 && (boolean)storedData.get("interactable")) {
+      if(cursorStartedPlaying < time && cursor >= time && !playedClickSound && enableHitSounds) {
         playedClickSound = true;
         hitsound.setPosition(0);
         //println(animPosition);

@@ -45,6 +45,7 @@ class Animation {
     } catch(Exception e) {
       println(keyframes, property);
       dead = true;
+      throw e;
     }
   }
   

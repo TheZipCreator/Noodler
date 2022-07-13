@@ -27,7 +27,7 @@ public class InfoWindow extends PApplet {
     frame.setResizable(true); //I know that I should use surface.setResizable(), but if I use that then it doesn't work correctly for some reason
     surface.setAlwaysOnTop(false);
     surface.setTitle("Info");
-    surface.setLocation(-900, 0);
+    surface.setLocation(0, 0);
     infoWindow.ellipseMode(CORNER);
     tempImage = new PImage(width, height);
     oldWidth = width;
@@ -132,6 +132,16 @@ public class InfoWindow extends PApplet {
               case "global_enableFancyLighting":
                 enableFancyLighting = ((CheckBox)uie).checked;
               break;
+              case "global_reloadMap":
+                if(((Button)uie).clicked) {
+                  ((Button)uie).clicked = false;
+                  reloadMap = true;
+                  resetCursor = false;
+                }
+                break;
+              case "global_enableHitSounds":
+                enableHitSounds = ((CheckBox)uie).checked;
+                break;
               default:
               break;
             }
@@ -333,9 +343,11 @@ public class InfoWindow extends PApplet {
       elements.add(new CheckBox(300, 190, 25, 25, "global_enableAssignPlayerToTrack", false, "Enable AssignPlayerToTrack Events"));
       elements.add(new CheckBox(300, 220, 25, 25, "global_renderMarkers", renderMarkers, "Render Markers"));
       elements.add(new CheckBox(300, 250, 25, 25, "global_enableFancyLighting", enableFancyLighting, "Enable Fancy Lighting"));
+      elements.add(new CheckBox(300, 280, 25, 25, "global_enableHitSounds", enableHitSounds, "Enable Hit Sounds"));
       elements.add(new TextBox(300, 100, 200, 25, "global_difficulty", difficulty, "Difficulty"));
       elements.add(new TextBox(510, 100, 200, 25, "global_characteristic", characteristic, "Characteristic"));
       elements.add(new FileSelector(300, 0, "global_songPath", songPath, true, sketchPath+"/data/levels", "Pick Map"));
+      elements.add(new Button(300, 50, 200, 25, "global_reloadMap", "Reload Map"));
     } else if(state == 1) {
       elements.add(new Button(1, 8, 64, 64, "global_return", "<"));
       Note n = selection.selectedNotes.get(0);
