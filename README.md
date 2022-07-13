@@ -4,7 +4,7 @@ This is not anywhere near release ready, and has numerous bugs, half-implemented
 ![logo](https://i.imgur.com/sNi6oi5.png)
 
 # Noodler
-Beat Saber map editor with Noodle Extensions support
+Beat Saber map editor (or really more of just like a visualizer, most of the editing stuff isn't really implemented) with Noodle Extensions support
 ## Requirements
 Java
 
