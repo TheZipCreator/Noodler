@@ -1,3 +1,6 @@
+# IMPORTANT
+This is not anywhere near release ready, and has numerous bugs, half-implemented features, and incorrect renderings. If you do use Noodler, do not rely on it for fully accurate rendering of NE maps. It only gets within a general area of how things *should* look, but many things do not render correctly or at all.
+
 ![logo](https://i.imgur.com/sNi6oi5.png)
 
 # Noodler
